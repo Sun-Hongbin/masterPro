@@ -5,8 +5,8 @@
 <mapper namespace="org.mcs.dao.DbFileDao">
     <!-- 目的：为DAO接口方法提供sql语句配置 -->
     <insert id="insert" parameterType="NoiseMessage">
-        insert into noise_message (user_id, db, create_time)
-        values (#{userId}, #{db}, #{createTime})
+        insert into noise_message (user_id, db, longtitude, latitude, collect_time, upload_time)
+        values (#{userId}, #{db}, #{longtitude}, #{latitude}, #{collectTime}, #{uploadTime})
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="Long">

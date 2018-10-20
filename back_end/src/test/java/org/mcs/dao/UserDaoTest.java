@@ -36,8 +36,7 @@ public class UserDaoTest {
         user.setUserPhone(123456789101L);
         user.setPassword("123456");
         user.setEmail("123@qq.com");
-        Date ctime = new Date();
-        user.setCreateTime(ctime);
+        user.setCreateTime(System.currentTimeMillis());
         if(userDao.insert(user) == 1){
             System.out.println("success to register");
         }else{

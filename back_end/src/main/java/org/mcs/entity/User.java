@@ -17,7 +17,7 @@ public class User {
 
     private String email;
 
-    private Date createTime;
+    private Long createTime;
 
     public Long getId() {
         return id;
@@ -59,11 +59,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getCreateTime() {
+    public Long getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Long createTime) {
         this.createTime = createTime;
     }
 

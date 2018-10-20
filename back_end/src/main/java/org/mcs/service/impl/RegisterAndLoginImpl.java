@@ -24,8 +24,7 @@ public class RegisterAndLoginImpl implements RegisterAndLogin {
     @Override
     public User register(User user) {
         try {
-            Date now = new Date();
-            user.setCreateTime(now);
+            user.setCreateTime(System.currentTimeMillis());
             int res = userDao.insert(user);
             switch (res) {
                 case 1:

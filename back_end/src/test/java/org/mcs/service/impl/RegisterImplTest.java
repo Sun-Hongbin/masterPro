@@ -34,8 +34,7 @@ public class RegisterImplTest {
         user.setUserPhone(123456789101L);
         user.setPassword("123456");
         user.setEmail("123@qq.com");
-        Date ctime = new Date();
-        user.setCreateTime(ctime);
+        user.setCreateTime(System.currentTimeMillis());
         User user1 = register.register(user);
         System.out.println(user1.toString());
     }
