@@ -1,4 +1,4 @@
-package me.daei.soundmeter.OkHttpUtils;
+package me.daei.soundmeter.okHttpUtils;
 
 import android.util.Log;
 
@@ -9,9 +9,7 @@ import java.io.IOException;
 import me.daei.soundmeter.Value;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -35,12 +33,6 @@ public class DoUpload {
 
         //2、构造Request Body,格式为json
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), json);
-
-  /*      FormBody body = new FormBody
-                .Builder()
-                .add("db","111")
-                .build();
-        System.out.println("====="+value.getUploadDbValue());*/
 
         //3、构造request
         Request.Builder builder = new Request.Builder();
