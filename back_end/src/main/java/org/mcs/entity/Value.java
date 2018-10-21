@@ -4,7 +4,7 @@ package org.mcs.entity;
  * created by SunHongbin on 2018/10/20
  */
 
-//该类用来取分贝的JSON数据
+//该类用来取APP传来的JSON数据，与NosiseMessage基本重复，暂未找到解决办法
 public class Value {
 
     private float dbCount;
@@ -15,9 +15,17 @@ public class Value {
 
     private float value;
 
-    private int avgOfDb;
+    private Integer avgOfDb;
 
-    private int uploadDbValue;
+    private Integer uploadDbValue;
+
+    private Long collectTime;
+
+    private Long uploadTime;
+
+    private double longtitude;
+
+    private double latitude;
 
     public float getDbCount() {
         return dbCount;
@@ -51,19 +59,51 @@ public class Value {
         this.value = value;
     }
 
-    public int getAvgOfDb() {
+    public Integer getAvgOfDb() {
         return avgOfDb;
     }
 
-    public void setAvgOfDb(int avgOfDb) {
+    public void setAvgOfDb(Integer avgOfDb) {
         this.avgOfDb = avgOfDb;
     }
 
-    public int getUploadDbValue() {
+    public Integer getUploadDbValue() {
         return uploadDbValue;
     }
 
-    public void setUploadDbValue(int uploadDbValue) {
+    public void setUploadDbValue(Integer uploadDbValue) {
         this.uploadDbValue = uploadDbValue;
+    }
+
+    public Long getCollectTime() {
+        return collectTime;
+    }
+
+    public void setCollectTime(Long collectTime) {
+        this.collectTime = collectTime;
+    }
+
+    public Long getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Long uploadTime) {
+        this.uploadTime = uploadTime;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(double longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }

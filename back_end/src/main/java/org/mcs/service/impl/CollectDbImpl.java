@@ -19,12 +19,8 @@ public class CollectDbImpl implements CollectDb {
     @Override
     public NoiseMessage createDbRecord(NoiseMessage record) {
 
-        record.setCollectTime(System.currentTimeMillis());
-        record.setUploadTime(System.currentTimeMillis());
         record.setDb(record.getDb());
-        record.setUserId(record.getUserId());
-        record.setLatitude(record.getLatitude());
-        record.setLongtitude(record.getLatitude());
+        record.setUserId(1002L);
         try {
             dbFileDao.insert(record);
         } catch (Exception e) {

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 /**
  * created by SunHongbin on 2018/10/20
@@ -27,21 +28,27 @@ public class DBController {
 
     @RequestMapping(value = "/db", method = RequestMethod.POST)
     @ResponseBody
-    public void collectDB(@RequestBody Value value){
-
-        System.out.println(value+"  " + value.getUploadDbValue());
+    public String collectDB(@RequestBody Value value) {
 
         NoiseMessage record = new NoiseMessage();
         record.setDb(value.getUploadDbValue());
+        record.setUploadTime(value.getUploadTime());
+        record.setCollectTime(value.getCollectTime());
+        DecimalFormat df = new DecimalFormat("0.##########");
+        System.out.println("经纬度=============>>>"+df.format(value.getLongtitude())
+                + " " + df.format(value.getLatitude()));
+        record.setLongtitude(value.getLongtitude());
+        record.setLatitude(value.getLatitude());
         collectDb.createDbRecord(record);
-    }
 
+        return "=====>>>connection success";
+    }
 
 
     //http://localhost:8080/tools/map
     @RequestMapping(value = "/map", method = RequestMethod.GET)
     @ResponseBody
-    public String map(){
+    public String map() {
         return "map";
     }
 

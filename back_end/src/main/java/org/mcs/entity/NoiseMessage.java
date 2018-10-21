@@ -11,9 +11,9 @@ public class NoiseMessage {
 
     private Integer db;
 
-    private double longtitude;
+    private Double longtitude;
 
-    private double latitude;
+    private Double latitude;
 
     private Long collectTime;
 
@@ -35,6 +35,22 @@ public class NoiseMessage {
         this.db = db;
     }
 
+    public Double getLongtitude() {
+        return longtitude;
+    }
+
+    public void setLongtitude(Double longtitude) {
+        this.longtitude = longtitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
     public Long getCollectTime() {
         return collectTime;
     }
@@ -51,29 +67,16 @@ public class NoiseMessage {
         this.uploadTime = uploadTime;
     }
 
-    public double getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     @Override
     public String toString() {
         return "NoiseMessage{" +
                 "userId=" + userId +
                 ", db=" + db +
+                ", longtitude=" + longtitude +
+                ", latitude=" + latitude +
                 ", collectTime=" + collectTime +
                 ", uploadTime=" + uploadTime +
                 '}';
     }
+
 }
