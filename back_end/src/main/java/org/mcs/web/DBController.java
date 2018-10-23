@@ -33,13 +33,11 @@ public class DBController {
         record.setUploadTime(value.getUploadTime());
         record.setCollectTime(value.getCollectTime());
         DecimalFormat df = new DecimalFormat("0.##########");
-        System.out.println("collectDB=============>>>经纬度"+df.format(value.getLongtitude())
-                + " " + df.format(value.getLatitude()));
         record.setLongtitude(value.getLongtitude());
         record.setLatitude(value.getLatitude());
         collectDb.createDbRecord(record);
 
-        return "=====>>>connection “collectDB” success";
+        return "=====>>>connection “collectDB” success: "+record.toString();
     }
 
     //http://localhost:8080/tools/map
