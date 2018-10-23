@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     private int sumOfDb;//分贝值总和
     private int count;//计算采集分贝个数
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private Handler handler = new Handler() {
         @Override
@@ -154,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onResume() {//protected void onResume()在 Activity 从 Pause 状态转换到 Active 状态时被调用。
         super.onResume();
@@ -201,13 +198,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void uploadData() {
-        if(value.getUploadDbValue() == null){
-            Toast.makeText(this, "麦克风不工作啦，请重新启动应用~" ,Toast.LENGTH_LONG).show();
+        if (value.getUploadDbValue() == null) {
+            Toast.makeText(this, "麦克风不工作啦，请重新启动应用~", Toast.LENGTH_LONG).show();
             return;
         }
         getLocation();
-        if(value.getLongtitude() == null){
-            Toast.makeText(this, "定位失败，请打开网络和GPS后重试！" ,Toast.LENGTH_LONG).show();
+        if (value.getLongtitude() == null) {
+            Toast.makeText(this, "定位失败，请打开网络和GPS后重试！", Toast.LENGTH_LONG).show();
             return;
         }
         value.setUploadTime(System.currentTimeMillis());
@@ -219,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "上传成功，感谢您的参与！", Toast.LENGTH_SHORT).show();
     }
 
-    public void getLocation(){
+    public void getLocation() {
 
         //3、location register
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

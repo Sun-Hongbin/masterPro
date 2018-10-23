@@ -6,6 +6,7 @@ import org.mcs.service.CollectDb;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * created by SunHongbin on 2018/10/20
@@ -27,5 +28,19 @@ public class CollectDbImpl implements CollectDb {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<NoiseMessage> formMap(NoiseMessage record) {
+        if(record.getCollectTime() == null || record.getUploadTime() == null){
+            return null;
+        }
+        try {
+            return dbFileDao.querySelective(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 }

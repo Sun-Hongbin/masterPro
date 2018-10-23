@@ -12,10 +12,11 @@ public class ScreenUtil {
 
     /**
      * 屏幕密度
+     *
      * @param context
      * @return
      */
-    public static float getDensity(Context context){
+    public static float getDensity(Context context) {
         if (context instanceof Activity) {
             context = context.getApplicationContext();
         }

@@ -5,19 +5,6 @@ CREATE DATABASE mcs_system;
 --使用数据库
 use mcs_system;
 
-CREATE TABLE `noise_message` (
-  `id` smallint(6) NOT NULL AUTO_INCREMENT COMMENT '噪声数据id',
-  `user_id` smallint(6) NOT NULL COMMENT '用户id',
-  `db` smallint(6) NOT NULL DEFAULT '-1' COMMENT '分贝值',
-  `longtitude` double(13,10) NOT NULL DEFAULT '-1.0000000000' COMMENT '进度',
-  `latitude` double(13,10) NOT NULL DEFAULT '-1.0000000000' COMMENT '纬度',
-  `collect_time` bigint(20) NOT NULL COMMENT '采集时间',
-  `upload_time` bigint(20) NOT NULL COMMENT '上传时间',
-  PRIMARY KEY (`id`),
-  KEY `FK_STUDENT_idx` (`user_id`),
-  CONSTRAINT `FK_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='噪声信息表';
-
 CREATE TABLE `user` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `name` varchar(120) NOT NULL COMMENT '用户名',
@@ -27,6 +14,19 @@ CREATE TABLE `user` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+CREATE TABLE `noise_message` (
+  `id` smallint(6) NOT NULL AUTO_INCREMENT COMMENT '噪声数据id',
+  `user_id` smallint(6) NOT NULL COMMENT '用户id',
+  `db` smallint(6) NOT NULL DEFAULT '0' COMMENT '分贝值',
+  `longtitude` decimal (15,8) NOT NULL DEFAULT '0.00000000' COMMENT '进度',
+  `latitude` decimal (15,8) NOT NULL DEFAULT '0.00000000' COMMENT '纬度',
+  `collect_time` bigint(20) NOT NULL COMMENT '采集时间',
+  `upload_time` bigint(20) NOT NULL COMMENT '上传时间',
+  PRIMARY KEY (`id`),
+  KEY `FK_STUDENT_idx` (`user_id`),
+  CONSTRAINT `FK_USER` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='噪声信息表';
 
 CREATE TABLE `login_record` (
   `id` smallint(6) NOT NULL AUTO_INCREMENT COMMENT '登录记录的id',

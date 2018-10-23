@@ -37,7 +37,7 @@ public class DoUpload {
         //3、构造request
         Request.Builder builder = new Request.Builder();
         Request request = builder
-                .url(mBaseUrl+"/tools/db")
+                .url(mBaseUrl + "/tools/db")
                 .post(body)
                 .build();
 

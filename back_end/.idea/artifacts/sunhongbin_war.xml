@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="sunhongbin:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="sunhongbin.war">
+      <element id="artifact" artifact-name="sunhongbin:war exploded" />
+    </root>
+  </artifact>
+</component>
