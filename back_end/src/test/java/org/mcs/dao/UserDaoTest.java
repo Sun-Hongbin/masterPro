@@ -8,11 +8,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 
-import java.util.Date;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 /**
  * created by SunHongbin on 2018/10/15
  */
@@ -59,7 +54,7 @@ public class UserDaoTest {
         user.setUserPhone(18500300866L);
         System.out.println("pass: " + user);
         user.setPassword("123456");
-        User user1  = userDao.SelectSelective(user);
-        System.out.println("res: " + user1);
+//        User user1  = userDao.selectSelective(user);
+//        System.out.println("res: " + user1);
     }
 }

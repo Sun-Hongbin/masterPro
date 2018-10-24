@@ -14,6 +14,6 @@ public interface UserDao {
 
     int deleteByPrimaryKey(Long id);
 
-    User SelectSelective(User user);
+    List<User> selectSelective(User user);
 
 }

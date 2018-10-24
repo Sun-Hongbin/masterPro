@@ -32,7 +32,6 @@ public class DBController {
         record.setDb(value.getUploadDbValue());
         record.setUploadTime(value.getUploadTime());
         record.setCollectTime(value.getCollectTime());
-        DecimalFormat df = new DecimalFormat("0.##########");
         record.setLongtitude(value.getLongtitude());
         record.setLatitude(value.getLatitude());
         collectDb.createDbRecord(record);

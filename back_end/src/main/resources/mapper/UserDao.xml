@@ -14,19 +14,22 @@
        where id=#{id}
     </delete>
 
-    <select id="SelectSelective" parameterType="User" resultType="User">
+    <select id="selectSelective" parameterType="User" resultType="User">
         select * from user
-        <trim prefix="WHERE " prefixOverrides="AND ">
-        <if test="userPhone != null">
-            user_phone LIKE #{userPhone,jdbcType=BIGINT}
-        </if>
-        <if test="email != null">
-            AND email LIKE #{email,jdbcType=VARCHAR}
-        </if>
-        <if test="password != null">
-            AND password LIKE #{password,jdbcType=VARCHAR}
-        </if>
-        </trim>
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="userPhone != null">
+                AND user_phone = #{userPhone,jdbcType=BIGINT}
+            </if>
+            <if test="email != null">
+                AND email LIKE #{email,jdbcType=VARCHAR}
+            </if>
+            <if test="password != null">
+                AND password LIKE #{password,jdbcType=VARCHAR}
+            </if>
+        </where>
     </select>
 
 </mapper>

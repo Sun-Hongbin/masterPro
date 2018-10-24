@@ -7,7 +7,7 @@ import org.mcs.entity.User;
  */
 public interface RegisterAndLogin {
 
-    User register(User user);
+    int register(User user);
 
-    Boolean logIn(User user);
+    Boolean logIn(Long userPhone, String password);
 }
