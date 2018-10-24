@@ -1,4 +1,4 @@
-package me.daei.soundmeter;
+package me.daei.soundmeter.Entity;
 
 public class Value {
 

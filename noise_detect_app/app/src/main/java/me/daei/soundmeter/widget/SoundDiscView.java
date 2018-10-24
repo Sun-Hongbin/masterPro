@@ -12,7 +12,7 @@ import android.util.AttributeSet;
 
 import me.daei.soundmeter.R;
 import me.daei.soundmeter.ScreenUtil;
-import me.daei.soundmeter.Value;
+import me.daei.soundmeter.Entity.Value;
 
 /**
  * Created by su on 2016/6/4.

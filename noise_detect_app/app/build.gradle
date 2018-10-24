@@ -1,22 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
     buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "me.daei.soundmeter"
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
-//        jackOptions {
-//            enabled true
-//        }
     }
     buildTypes {
         release {
@@ -29,13 +26,11 @@ android {
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    // https://mvnrepository.com/artifact/com.android.support/appcompat-v7
-    api group: 'com.android.support', name: 'appcompat-v7', version: '27.1.1'
-    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    api group: 'com.android.support', name: 'appcompat-v7', version: '26.1.0'
+    api group: 'com.android.support', name: 'design', version: '26.1.0'
     api group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.10.0'
-    // https://mvnrepository.com/artifact/com.android.support/design
-    api group: 'com.android.support', name: 'design', version: '27.1.1'
-
     api 'com.google.code.gson:gson:2.8.1'
-
+    //bind findbyid
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

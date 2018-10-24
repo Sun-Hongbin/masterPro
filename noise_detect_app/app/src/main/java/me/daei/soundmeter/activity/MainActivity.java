@@ -1,7 +1,8 @@
-package me.daei.soundmeter;
+package me.daei.soundmeter.activity;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -24,19 +25,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import me.daei.soundmeter.okHttpUtils.DoUpload;
+import me.daei.soundmeter.Entity.Urls;
+import me.daei.soundmeter.Entity.Value;
+import me.daei.soundmeter.FileUtil;
+import me.daei.soundmeter.MyMediaRecorder;
+import me.daei.soundmeter.R;
+import me.daei.soundmeter.service.DoUpload;
 import me.daei.soundmeter.widget.SoundDiscView;
 
-/**
- * 首先你要知道Activity的四种状态：
- * Active/Runing 一个新 Activity 启动入栈后，它在屏幕最前端，处于栈的最顶端，此时它处于可见并可和用户交互的激活状态。
- * Paused 当 Activity 被另一个透明或者 Dialog 样式的 Activity 覆盖时的状态。此时它依然与窗口管理器保持连接，系统继续维护其内部状态，所以它仍然可见，但它已经失去了焦点故不可与用户交互。
- * Stoped 当 Activity 被另外一个 Activity 覆盖、失去焦点并不可见时处于 Stoped 状态。
- * Killed Activity 被系统杀死回收或者没有被启动时处于 Killed 状态。
- * protected void onStart() 该方法在 onCreate() 方法之后被调用，或者在 Activity 从 Stop 状态转换为 Active 状态时被调用，一般执行了onStart()后就执行onResume()。
- * protected void onResume() 在 Activity 从 Pause 状态转换到 Active 状态时被调用。
- */
 public class MainActivity extends AppCompatActivity {
+
+    private static String dbUrl = Urls.aliyunUrl + "/tools/db";
 
     float volume = 10000;
     private SoundDiscView soundDiscView;
@@ -75,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
         //初次启动就检查GPS
         getLocation();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     public void Onclick(View view) {
@@ -209,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         }
         value.setUploadTime(System.currentTimeMillis());
         DoUpload doUpload = new DoUpload();
-        doUpload.doUploadData(value);//上传
+        doUpload.doUpload_Db(value, dbUrl, null);//上传
         value.setUploadDbValue(null);
         value.setLongtitude(null);
         value.setLatitude(null);
@@ -319,6 +321,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
 //    点击登录按钮时 ，获取申请权限的结果 并且这里动态申请了“悬浮窗”的权限
 // 1. 如何小于6.0 直接登陆
 // 2. 申请悬浮窗权限，如果没有，直接跳转到具体页面进行设置，完成后在onActivityResult 中判断是否允许该权限
@@ -355,7 +359,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //申请权限后的操作
     public String getRequestPermission() {
         if (mShowRequestPermission) {
@@ -367,6 +370,4 @@ public class MainActivity extends AppCompatActivity {
             return "-1";
         }
     }*/
-
-
 }
