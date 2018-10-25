@@ -9,5 +9,7 @@ public class Urls {
 
     public static String aliyunUrl = "http://120.77.204.166:8080";
 
-    public static String t460pUrl = "http://172.30.84.116:8080";
+//    public static String t460Purl = "http://172.30.84.116:8080";
+
+    public static String sinaMobileUrl = "http://10.222.138.190:8080";
 }

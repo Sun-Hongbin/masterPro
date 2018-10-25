@@ -201,12 +201,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void uploadData() {
         if (value.getUploadDbValue() == null) {
-            Toast.makeText(this, "麦克风不工作啦，请重新启动应用~", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "麦克风不工作啦，请重新启动应用", Toast.LENGTH_LONG).show();
             return;
         }
         getLocation();
         if (value.getLongtitude() == null) {
-            Toast.makeText(this, "定位失败，请打开网络和GPS后重试！", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "获取位置失败，请检查网络配置", Toast.LENGTH_LONG).show();
             return;
         }
         value.setUploadTime(System.currentTimeMillis());
@@ -227,20 +227,25 @@ public class MainActivity extends AppCompatActivity {
         List<String> providerList = locationManager.getProviders(true);
         if (providerList.contains(LocationManager.GPS_PROVIDER)) {
             provider = LocationManager.GPS_PROVIDER;
+            System.out.println("获取到GPS： "+ provider);
         } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
+            System.out.println("获取到4G网络： "+ provider);
         } else {
             //当没有可用的位置提供器时，弹出Toast提示用户
-            Toast.makeText(this, "定位失败，请您将网络和GPS打开…", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "请打开网络和GPS", Toast.LENGTH_LONG).show();
             return;
         }
         //3、3判断是否有权限
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            System.out.println("已经获取到GPS定位权限");
             //3.4获取上一次设备位置信息
             Location location = locationManager.getLastKnownLocation(provider);
+            System.out.println("执行了==>>>Location location = locationManager.getLastKnownLocation(provider);");
             if (location != null) {
+                System.out.println("==>>>location != null");
                 //getLastKnownLocation这个方法用一次往往不能成功，所以在判断不为空的时候反复获取，即加上下面一句话
-                locationManager.requestLocationUpdates("gps", 60000, 1, locationListener);
+                locationManager.requestLocationUpdates("gps", 3000, 1, locationListener);
                 //获取当前位置，这里只用到经纬度
                 System.out.println("上一次记录的经度为：" + location.getLongitude() + " 纬度为：" + location.getLatitude());
                 value.setLongtitude(location.getLongitude());
@@ -249,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             //绑定定位事件，监听位置是否改变
             //param1：控制器类型  param2：监听位置变化的时间间隔 param3:位置变化间隔(m) param4: 位置监听器
             locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
+            System.out.println("done!!!!!!!!!");
         }
     }
 

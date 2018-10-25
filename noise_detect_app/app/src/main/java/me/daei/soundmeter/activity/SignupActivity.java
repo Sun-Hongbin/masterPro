@@ -24,9 +24,8 @@ import me.daei.soundmeter.service.HttpDataResponse;
 
 public class SignupActivity extends AppCompatActivity implements HttpDataResponse {
 
-    private static final String TAG = "SignupActivity";
     private ProgressDialog progressDialog = null;
-    private String registerUrl = Urls.t460pUrl + "/user/register";
+    private String registerUrl = Urls.sinaMobileUrl + "/user/register";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -88,7 +87,6 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
     }
 
     public void signup() {
-
         if (!validate()) {
             onSignupFailed();
             System.out.println("!!!参数不合法");
@@ -114,7 +112,7 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
         // TODO: Implement your own signup logic here.
         DoUpload doUpload = new DoUpload();
         doUpload.doUpload_Register(user, registerUrl, this);//this指本页面
-        handler.sendEmptyMessageDelayed(0, 1500);
+        handler.sendEmptyMessageDelayed(0, 1200);
     }
 
     public void onSignupSuccess() {
@@ -124,7 +122,6 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
 
     public void onSignupFailed() {
         Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
-//        _signupButton.setEnabled(true);
     }
 
     public boolean validate() {
@@ -179,7 +176,7 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
         Message message = handler.obtainMessage();
         message.obj = res;
         message.what = 1;
-        handler.sendMessageDelayed(message, 2100);
+        handler.sendMessageDelayed(message, 1250);
     }
 
     @Override

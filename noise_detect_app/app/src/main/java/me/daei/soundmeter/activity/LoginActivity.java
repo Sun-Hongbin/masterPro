@@ -22,13 +22,14 @@ import me.daei.soundmeter.Entity.User;
 import me.daei.soundmeter.R;
 import me.daei.soundmeter.service.DoUpload;
 import me.daei.soundmeter.service.HttpDataResponse;
+import me.daei.soundmeter.service.KeepLogin;
 
 public class LoginActivity extends AppCompatActivity implements HttpDataResponse {
 
-    private String loginUrl = Urls.t460pUrl + "/user/login";
+    private String loginUrl = Urls.sinaMobileUrl + "/user/login";
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private boolean isExit = false;
+    private boolean isLogin = false;
     private ProgressDialog progressDialog = null;
     private Handler handler = new Handler() {
         @Override
@@ -42,6 +43,8 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
                 case 1:
                     Toast.makeText(LoginActivity.this, (String) msg.obj, Toast.LENGTH_SHORT).show();
                     if ((msg.obj).equals("Login in success")) {
+                        KeepLogin.setParam(LoginActivity.this, KeepLogin.IS_LOGIN, true);
+                        KeepLogin.setParam(LoginActivity.this, KeepLogin.LOGIN_DATA, _mobileText.getText().toString());
                         finish();
                     }
                     break;
@@ -66,7 +69,6 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         ButterKnife.bind(this);
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 login();
@@ -74,7 +76,6 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         });
 
         _signupLink.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 // Start the Signup activity
@@ -84,6 +85,12 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+        isLogin = (boolean) KeepLogin.getParam(LoginActivity.this, KeepLogin.IS_LOGIN, false);
+        Toast.makeText(LoginActivity.this, "=========>>>isLogin: " + isLogin, Toast.LENGTH_SHORT).show();
+        if (isLogin) {
+            finish();
+        }
     }
 
     public void login() {
@@ -111,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         DoUpload doUpload = new DoUpload();
         doUpload.doUpload_Login(loginUrl
                 + "?userPhone=" + phoneNumber + "&password=" + password, this);
-        handler.sendEmptyMessageDelayed(0, 1500);
+        handler.sendEmptyMessageDelayed(0, 1200);
     }
 
     @Override
@@ -168,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         Message message = handler.obtainMessage();
         message.obj = res;
         message.what = 1;
-        handler.sendMessageDelayed(message, 2100);
+        handler.sendMessageDelayed(message, 1250);
     }
 
     @Override
