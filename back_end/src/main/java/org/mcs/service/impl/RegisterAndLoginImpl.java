@@ -77,7 +77,7 @@ public class RegisterAndLoginImpl implements RegisterAndLogin {
         user.setPassword(password);
         user.setCreateTime(System.currentTimeMillis());
         try {
-            if (userDao.selectSelective(user).size() == 1) {
+            if (userDao.selectSelective(user).size() == 1 ) {
                 return true;
             } else {
                 return false;

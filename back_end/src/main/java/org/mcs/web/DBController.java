@@ -30,13 +30,13 @@ public class DBController {
 
         NoiseMessage record = new NoiseMessage();
         record.setDb(value.getUploadDbValue());
-        record.setUploadTime(value.getUploadTime());
         record.setCollectTime(value.getCollectTime());
         record.setLongtitude(value.getLongtitude());
         record.setLatitude(value.getLatitude());
-        collectDb.createDbRecord(record);
+        long userPhone = value.getUserPhone();
+        collectDb.createDbRecord(record, userPhone);
 
-        return "=====>>>connection “collectDB” success: "+record.toString();
+        return "=====>>> “collectDB” success: "+record.toString();
     }
 
     //http://localhost:8080/tools/map

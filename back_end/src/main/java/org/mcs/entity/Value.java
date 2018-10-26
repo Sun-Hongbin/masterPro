@@ -27,6 +27,8 @@ public class Value {
 
     private double latitude;
 
+    private Long userPhone;
+
     public float getDbCount() {
         return dbCount;
     }
@@ -105,5 +107,13 @@ public class Value {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public Long getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(Long userPhone) {
+        this.userPhone = userPhone;
     }
 }

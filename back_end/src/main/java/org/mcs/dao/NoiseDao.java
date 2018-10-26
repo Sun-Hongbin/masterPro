@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * created by SunHongbin on 2018/10/15
  */
-public interface DbFileDao {
+public interface NoiseDao {
 
     int insert(NoiseMessage record);
 

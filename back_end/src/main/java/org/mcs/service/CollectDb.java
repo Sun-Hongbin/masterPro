@@ -10,7 +10,7 @@ import java.util.List;
 public interface CollectDb {
 
     //用户采集噪声数据后记录在数据库
-    NoiseMessage createDbRecord(NoiseMessage record);
+    NoiseMessage createDbRecord(NoiseMessage record, Long userPhone);
 
     //查某一时间段的噪声地图
     List<NoiseMessage> formMap(NoiseMessage record);

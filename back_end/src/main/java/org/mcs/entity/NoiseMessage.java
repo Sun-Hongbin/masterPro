@@ -1,5 +1,6 @@
 package org.mcs.entity;
 
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -7,9 +8,13 @@ import java.util.Date;
  */
 public class NoiseMessage {
 
+    private Long id;//TODO 用多线程确保资源自增顺利
+
     private Long userId;
 
     private Integer db;
+
+    private byte[] mp3File;
 
     private Double longtitude;
 
@@ -18,6 +23,16 @@ public class NoiseMessage {
     private Long collectTime;
 
     private Long uploadTime;
+
+    private Long taskId;//参加的是哪一条任务，可以为null
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getUserId() {
         return userId;
@@ -33,6 +48,14 @@ public class NoiseMessage {
 
     public void setDb(Integer db) {
         this.db = db;
+    }
+
+    public byte[] getMp3File() {
+        return mp3File;
+    }
+
+    public void setMp3File(byte[] mp3File) {
+        this.mp3File = mp3File;
     }
 
     public Double getLongtitude() {
@@ -67,16 +90,26 @@ public class NoiseMessage {
         this.uploadTime = uploadTime;
     }
 
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
+
     @Override
     public String toString() {
         return "NoiseMessage{" +
-                "userId=" + userId +
+                "id=" + id +
+                ", userId=" + userId +
                 ", db=" + db +
+                ", mp3File=" + Arrays.toString(mp3File) +
                 ", longtitude=" + longtitude +
                 ", latitude=" + latitude +
                 ", collectTime=" + collectTime +
                 ", uploadTime=" + uploadTime +
+                ", taskId=" + taskId +
                 '}';
     }
-
 }

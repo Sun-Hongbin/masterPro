@@ -1,7 +1,9 @@
 package org.mcs.service.impl;
 
-import org.mcs.dao.DbFileDao;
+import org.mcs.dao.NoiseDao;
+import org.mcs.dao.UserDao;
 import org.mcs.entity.NoiseMessage;
+import org.mcs.entity.User;
 import org.mcs.service.CollectDb;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +17,21 @@ import java.util.List;
 public class CollectDbImpl implements CollectDb {
 
     @Resource
-    private DbFileDao dbFileDao;
+    private UserDao userDao;
+
+    @Resource
+    private NoiseDao noiseDao;
 
     @Override
-    public NoiseMessage createDbRecord(NoiseMessage record) {
+    public NoiseMessage createDbRecord(NoiseMessage noiseMessage, Long userPhone) {
 
-        record.setDb(record.getDb());
-        record.setUserId(1002L);
+        User user = new User();
+        user.setUserPhone(userPhone);
+        long participantId = userDao.selectSelective(user).get(0).getId();
+        noiseMessage.setUploadTime(System.currentTimeMillis());
+        noiseMessage.setUserId(participantId);
         try {
-            dbFileDao.insert(record);
+            noiseDao.insert(noiseMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -31,12 +39,12 @@ public class CollectDbImpl implements CollectDb {
     }
 
     @Override
-    public List<NoiseMessage> formMap(NoiseMessage record) {
-        if(record.getCollectTime() == null || record.getUploadTime() == null){
+    public List<NoiseMessage> formMap(NoiseMessage noiseMessage) {
+        if (noiseMessage.getUploadTime() == null) {
             return null;
         }
         try {
-            return dbFileDao.querySelective(record);
+            return noiseDao.querySelective(noiseMessage);
         } catch (Exception e) {
             e.printStackTrace();
         }
