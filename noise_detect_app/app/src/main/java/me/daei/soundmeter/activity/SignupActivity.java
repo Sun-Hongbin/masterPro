@@ -25,7 +25,7 @@ import me.daei.soundmeter.service.HttpDataResponse;
 public class SignupActivity extends AppCompatActivity implements HttpDataResponse {
 
     private ProgressDialog progressDialog = null;
-    private String registerUrl = Urls.sinaMobileUrl + "/user/register";
+    private String registerUrl = Urls.aliyunUrl + "/user/register";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -46,20 +46,13 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
         }
     };
 
-    @BindView(R.id.input_name)
-    EditText _nameText;
-    @BindView(R.id.input_email)
-    EditText _emailText;
-    @BindView(R.id.input_mobile)
-    EditText _mobileText;
-    @BindView(R.id.input_password)
-    EditText _passwordText;
-    @BindView(R.id.input_reEnterPassword)
-    EditText _reEnterPasswordText;
-    @BindView(R.id.btn_signup)
-    Button _signupButton;
-    @BindView(R.id.link_login)
-    TextView _loginLink;
+    @BindView(R.id.input_name) EditText _nameText;
+    @BindView(R.id.input_email) EditText _emailText;
+    @BindView(R.id.input_mobile) EditText _mobileText;
+    @BindView(R.id.input_password) EditText _passwordText;
+    @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
+    @BindView(R.id.btn_signup) Button _signupButton;
+    @BindView(R.id.link_login) TextView _loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,7 +81,6 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
 
     public void signup() {
         if (!validate()) {
-            onSignupFailed();
             System.out.println("!!!参数不合法");
             return;
         }
@@ -113,15 +105,6 @@ public class SignupActivity extends AppCompatActivity implements HttpDataRespons
         DoUpload doUpload = new DoUpload();
         doUpload.doUpload_Register(user, registerUrl, this);//this指本页面
         handler.sendEmptyMessageDelayed(0, 1200);
-    }
-
-    public void onSignupSuccess() {
-        setResult(RESULT_OK, null);
-        finish();
-    }
-
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
     }
 
     public boolean validate() {

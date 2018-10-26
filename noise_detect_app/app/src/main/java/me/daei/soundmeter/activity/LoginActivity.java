@@ -26,7 +26,7 @@ import me.daei.soundmeter.service.KeepLogin;
 
 public class LoginActivity extends AppCompatActivity implements HttpDataResponse {
 
-    private String loginUrl = Urls.sinaMobileUrl + "/user/login";
+    private String loginUrl = Urls.aliyunUrl + "/user/login";
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private boolean isLogin = false;
@@ -53,14 +53,10 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         }
     };
 
-    @BindView(R.id.input_mobile)
-    EditText _mobileText;
-    @BindView(R.id.input_password)
-    EditText _passwordText;
-    @BindView(R.id.btn_login)
-    Button _loginButton;
-    @BindView(R.id.link_signup)
-    TextView _signupLink;
+    @BindView(R.id.input_mobile) EditText _mobileText;
+    @BindView(R.id.input_password) EditText _passwordText;
+    @BindView(R.id.btn_login) Button _loginButton;
+    @BindView(R.id.link_signup) TextView _signupLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +83,6 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         });
 
         isLogin = (boolean) KeepLogin.getParam(LoginActivity.this, KeepLogin.IS_LOGIN, false);
-        Toast.makeText(LoginActivity.this, "=========>>>isLogin: " + isLogin, Toast.LENGTH_SHORT).show();
         if (isLogin) {
             finish();
         }
@@ -97,7 +92,6 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
         Log.d(TAG, "Login");
 
         if (!validate()) {
-            onLoginFailed();
             return;
         }
 //        _loginButton.setEnabled(false);//置为false则点击按钮后不能再点第二次
@@ -136,15 +130,6 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
     public void onBackPressed() {
         // Disable going back to the MainActivity
         moveTaskToBack(true);
-    }
-
-    public void onLoginSuccess() {
-        finish();
-    }
-
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed! No such user Or wrong password.",
-                Toast.LENGTH_LONG).show();
     }
 
     public boolean validate() {

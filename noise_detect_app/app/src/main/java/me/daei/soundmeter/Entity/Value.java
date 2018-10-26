@@ -18,8 +18,6 @@ public class Value {
 
     private Long collectTime;
 
-    private Long uploadTime;
-
     private Double longtitude;
 
     private Double latitude;
@@ -60,14 +58,6 @@ public class Value {
 
     public void setCollectTime(Long collectTime) {
         this.collectTime = collectTime;
-    }
-
-    public Long getUploadTime() {
-        return uploadTime;
-    }
-
-    public void setUploadTime(Long uploadTime) {
-        this.uploadTime = uploadTime;
     }
 
     public Double getLongtitude() {

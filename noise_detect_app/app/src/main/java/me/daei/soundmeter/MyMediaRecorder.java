@@ -44,8 +44,8 @@ public class MyMediaRecorder {
         try {
             mMediaRecorder = new MediaRecorder();
 
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);// 设置麦克风为音频源
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP); // 设置音频文件的编码
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mMediaRecorder.setOutputFile(myRecAudioFile.getAbsolutePath());
 

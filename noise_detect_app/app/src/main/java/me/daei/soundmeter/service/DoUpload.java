@@ -1,11 +1,14 @@
 package me.daei.soundmeter.service;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import me.daei.soundmeter.Entity.Urls;
 import me.daei.soundmeter.Entity.User;
@@ -13,10 +16,13 @@ import me.daei.soundmeter.Entity.Value;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
+import static me.daei.soundmeter.FileUtil.REC_PATH;
 
 /**
  * Created by SunHongbin on 2018/10/20
@@ -27,16 +33,31 @@ public class DoUpload {
 
     Gson gson = new Gson();    //1.1 使用gson，用json传数据
 
-    //传db数据
-    public void doUpload_Db(Value value, String url, HttpDataResponse httpDataResponse) {
+    //传db数据和录音文件
+    public void doUpload_Db(String url, Map<String, String> map,
+                        HttpDataResponse httpDataResponse) {
 
-        String json = gson.toJson(value);        //2、构造Request Body,格式为json
-        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), json);
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        if(map != null){
+            for(Map.Entry<String, String> entry:map.entrySet()){
+                builder.addFormDataPart(entry.getKey(), entry.getValue());
+            }
+        }
 
-        Request.Builder builder = new Request.Builder();        //3、构造request
-        Request request = builder
+        File file = new File(REC_PATH + "temp.amr");
+        if (!file.exists()) {
+            System.out.println("文件不存在！");
+            return;
+        }
+        RequestBody fileBody = RequestBody.create(MediaType.parse("octet-stream"), file);//audio/mpeg
+        RequestBody requestBody = builder
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("audioFile", file.getName(), fileBody)
+                .build();
+
+        Request request = new Request.Builder()        //3、构造request
                 .url(url)
-                .post(body)
+                .post(requestBody)
                 .build();
         executeRequest(request, httpDataResponse);
     }
@@ -88,5 +109,20 @@ public class DoUpload {
 
         });
     }
+
+
+   /* //传db数据，POST
+    public void doUpload_Db(Value value, String url, HttpDataResponse httpDataResponse) {
+
+        String json = gson.toJson(value);        //2、构造Request Body,格式为json
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=UTF-8"), json);
+
+        Request.Builder builder = new Request.Builder();        //3、构造request
+        Request request = builder
+                .url(url)
+                .post(body)
+                .build();
+        executeRequest(request, httpDataResponse);
+    }*/
 
 }

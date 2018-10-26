@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -15,15 +16,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import me.daei.soundmeter.Entity.Urls;
 import me.daei.soundmeter.Entity.Value;
@@ -31,6 +36,7 @@ import me.daei.soundmeter.FileUtil;
 import me.daei.soundmeter.MyMediaRecorder;
 import me.daei.soundmeter.R;
 import me.daei.soundmeter.service.DoUpload;
+import me.daei.soundmeter.service.KeepLogin;
 import me.daei.soundmeter.widget.SoundDiscView;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
     private MyMediaRecorder mRecorder;
     private static final int msgWhat = 0x1001;
     private static final int refreshTime = 100;
+    private static final String TAG="GpsActivity";
     private Button mStopButton, mStartButton;
     private boolean mShowRequestPermission = true;//用户是否禁用权限
     private LocationManager locationManager;//获取地理位置
     private String provider;
     private boolean isCreateFile;//是否写入文件
     private Long startTime;
-    private String fileName;
     private StringBuffer buffer = new StringBuffer();
     private Value value = new Value();
     private int sumOfDb;//分贝值总和
@@ -86,9 +92,6 @@ public class MainActivity extends AppCompatActivity {
             //获取系统时间作为文件名
             startTime = System.currentTimeMillis();
             value.setCollectTime(startTime);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("-MM-dd-HH-mm-ss");
-            Date date = new Date(startTime);
-            fileName = simpleDateFormat.format(date) + ".txt";
         }
         if (view.getId() == R.id.doUpload) {
             if (value.getUploadDbValue() != null) {
@@ -117,11 +120,10 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(String.valueOf(dbValue) + " interval: " + String.valueOf(interval) +
                             " 当前为第" + count + "个数据" + " sumOfDb和为" + sumOfDb + "\n");
                     if (interval > 3000) {
-                        FileUtil.writeFileSdCard(fileName, buffer);//将buffer值写入txt文件
+//                        FileUtil.writeFileSdCard(fileName, buffer);//将buffer值写入txt文件
                         value.setAvgOfDb(sumOfDb / count);
                         System.out.println("平均值： " + value.getAvgOfDb() + " 和：" + sumOfDb + " 个数： " + count);
                         value.setUploadDbValue(value.getAvgOfDb());
-                        System.out.println("设置setUploadDbValue：" + value.getUploadDbValue());
                         initValues(value);
                     }
                 }
@@ -209,9 +211,12 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "获取位置失败，请检查网络配置", Toast.LENGTH_LONG).show();
             return;
         }
-        value.setUploadTime(System.currentTimeMillis());
+        Map map = new HashMap();
+        map.put("longtitude", value.getLongtitude().toString());
+        map.put("latitude", value.getLatitude().toString());
+        map.put("db", value.getUploadDbValue().toString());
         DoUpload doUpload = new DoUpload();
-        doUpload.doUpload_Db(value, dbUrl, null);//上传
+        doUpload.doUpload_Db(dbUrl, map, null);//上传
         value.setUploadDbValue(null);
         value.setLongtitude(null);
         value.setLatitude(null);
@@ -227,10 +232,10 @@ public class MainActivity extends AppCompatActivity {
         List<String> providerList = locationManager.getProviders(true);
         if (providerList.contains(LocationManager.GPS_PROVIDER)) {
             provider = LocationManager.GPS_PROVIDER;
-            System.out.println("获取到GPS： "+ provider);
+            System.out.println("获取到GPS： " + provider);
         } else if (providerList.contains(LocationManager.NETWORK_PROVIDER)) {
             provider = LocationManager.NETWORK_PROVIDER;
-            System.out.println("获取到4G网络： "+ provider);
+            System.out.println("获取到4G网络： " + provider);
         } else {
             //当没有可用的位置提供器时，弹出Toast提示用户
             Toast.makeText(this, "请打开网络和GPS", Toast.LENGTH_LONG).show();
@@ -238,14 +243,13 @@ public class MainActivity extends AppCompatActivity {
         }
         //3、3判断是否有权限
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            System.out.println("已经获取到GPS定位权限");
             //3.4获取上一次设备位置信息
             Location location = locationManager.getLastKnownLocation(provider);
-            System.out.println("执行了==>>>Location location = locationManager.getLastKnownLocation(provider);");
+            System.out.println("已经获取到GPS定位权限");
             if (location != null) {
                 System.out.println("==>>>location != null");
                 //getLastKnownLocation这个方法用一次往往不能成功，所以在判断不为空的时候反复获取，即加上下面一句话
-                locationManager.requestLocationUpdates("gps", 3000, 1, locationListener);
+                locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
                 //获取当前位置，这里只用到经纬度
                 System.out.println("上一次记录的经度为：" + location.getLongitude() + " 纬度为：" + location.getLatitude());
                 value.setLongtitude(location.getLongitude());
@@ -279,6 +283,26 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    /**
+     * GPS状态变化时触发
+     */
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        switch (status) {
+            //GPS状态为可见时
+            case LocationProvider.AVAILABLE:
+                Log.i(TAG, "当前GPS状态为可见状态");
+                break;
+            //GPS状态为服务区外时
+            case LocationProvider.OUT_OF_SERVICE:
+                Log.i(TAG, "当前GPS状态为服务区外状态");
+                break;
+            //GPS状态为暂停服务时
+            case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                Log.i(TAG, "当前GPS状态为暂停服务状态");
+                break;
+        }
+    }
 
     private void init_permission() {
         if (getSdkVersionSix()) {
@@ -328,7 +352,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
 //    点击登录按钮时 ，获取申请权限的结果 并且这里动态申请了“悬浮窗”的权限
 // 1. 如何小于6.0 直接登陆
 // 2. 申请悬浮窗权限，如果没有，直接跳转到具体页面进行设置，完成后在onActivityResult 中判断是否允许该权限
@@ -375,5 +398,24 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 3);
             return "-1";
         }
+    }*/
+
+/*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            KeepLogin.setParam(MainActivity.this, KeepLogin.IS_LOGIN, false);
+            KeepLogin.removeParam(MainActivity.this, KeepLogin.LOGIN_DATA);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }*/
 }
