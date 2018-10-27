@@ -1,2 +1,3 @@
 # masterPro
-a noise detection System, can collect noise data & form a noise_map;
+Project: Noise Detection System
+Fuction：Collect Noise Data & Form A Noise ap REAL TIME;
