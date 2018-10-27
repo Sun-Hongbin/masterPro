@@ -41,24 +41,26 @@ import me.daei.soundmeter.widget.SoundDiscView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String dbUrl = Urls.aliyunUrl + "/tools/db";
+    private static String dbUrl = Urls.localUrl + "/tools/db";
 
     float volume = 10000;
     private SoundDiscView soundDiscView;
     private MyMediaRecorder mRecorder;
     private static final int msgWhat = 0x1001;
     private static final int refreshTime = 100;
-    private static final String TAG="GpsActivity";
+    private static final String TAG = "GpsActivity";
     private Button mStopButton, mStartButton;
     private boolean mShowRequestPermission = true;//用户是否禁用权限
     private LocationManager locationManager;//获取地理位置
     private String provider;
     private boolean isCreateFile;//是否写入文件
+    private boolean isLogin = false;//是否已经登陆
     private Long startTime;
-    private StringBuffer buffer = new StringBuffer();
+//    private StringBuffer buffer = new StringBuffer();
     private Value value = new Value();
     private int sumOfDb;//分贝值总和
     private int count;//计算采集分贝个数
+    public LocationListener locationListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +80,36 @@ public class MainActivity extends AppCompatActivity {
         //2、recorder
         mRecorder = new MyMediaRecorder();
 
-        //初次启动就检查GPS
-        getLocation();
+        //判断是否登陆
+        isLogin = (boolean) KeepLogin.getParam(this, KeepLogin.IS_LOGIN, false);
+        if (!isLogin) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        //3、初次启动就检查GPS
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(android.location.Location location) {
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        getLocation();
     }
 
     public void Onclick(View view) {
@@ -114,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 if (isCreateFile == true) {
                     int dbValue = (int) Value.getDbCount();
                     long interval = System.currentTimeMillis() - startTime;
-                    buffer.append(String.valueOf(dbValue) + " ");
+//                    buffer.append(String.valueOf(dbValue) + " ");
                     count++;
                     sumOfDb += dbValue;
                     System.out.println(String.valueOf(dbValue) + " interval: " + String.valueOf(interval) +
@@ -159,6 +186,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {//protected void onResume()在 Activity 从 Pause 状态转换到 Active 状态时被调用。
         super.onResume();
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            //当GPS定位时，在这里注册requestLocationUpdates监听就非常重要而且必要。没有这句话，定位不能成功。
+            locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
+        }
         soundDiscView = findViewById(R.id.soundDiscView);
         File file = FileUtil.createTempFile("temp.amr");
         if (file != null) {
@@ -177,6 +208,9 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         mRecorder.delete(); //停止记录并删除录音文件
         handler.removeMessages(msgWhat);
+        if(locationManager != null){
+            locationManager.removeUpdates(locationListener);
+        }
     }
 
     @Override
@@ -194,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
     //重新初始化值
     public void initValues(Value value) {
         startTime = System.currentTimeMillis();//更新初创建时间
-        buffer.setLength(0);//buffer清空
+//        buffer.setLength(0);//buffer清空
         value.setAvgOfDb(0);
         sumOfDb = 0;
         count = 0;
@@ -215,18 +249,15 @@ public class MainActivity extends AppCompatActivity {
         map.put("longtitude", value.getLongtitude().toString());
         map.put("latitude", value.getLatitude().toString());
         map.put("db", value.getUploadDbValue().toString());
+        map.put("userPhone", KeepLogin.getParam(this, "loginData","loginData"));
         DoUpload doUpload = new DoUpload();
         doUpload.doUpload_Db(dbUrl, map, null);//上传
+        Toast.makeText(this, "上传成功，感谢您的参与！分贝大小为：" +
+                value.getUploadDbValue().toString(), Toast.LENGTH_SHORT).show();
         value.setUploadDbValue(null);
-        value.setLongtitude(null);
-        value.setLatitude(null);
-        Toast.makeText(this, "上传成功，感谢您的参与！", Toast.LENGTH_SHORT).show();
     }
 
     public void getLocation() {
-
-        //3、location register
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //3、1获取所有可用的位置提供器
         List<String> providerList = locationManager.getProviders(true);
@@ -245,11 +276,10 @@ public class MainActivity extends AppCompatActivity {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //3.4获取上一次设备位置信息
             Location location = locationManager.getLastKnownLocation(provider);
-            System.out.println("已经获取到GPS定位权限");
             if (location != null) {
-                System.out.println("==>>>location != null");
+                System.out.println("==>>> location != null");
                 //getLastKnownLocation这个方法用一次往往不能成功，所以在判断不为空的时候反复获取，即加上下面一句话
-                locationManager.requestLocationUpdates(provider, 0, 0, locationListener);
+                locationManager.requestLocationUpdates(provider, 6000, 1, locationListener);
                 //获取当前位置，这里只用到经纬度
                 System.out.println("上一次记录的经度为：" + location.getLongitude() + " 纬度为：" + location.getLatitude());
                 value.setLongtitude(location.getLongitude());
@@ -262,47 +292,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(android.location.Location location) {
 
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
-    };
-
-    /**
-     * GPS状态变化时触发
-     */
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        switch (status) {
-            //GPS状态为可见时
-            case LocationProvider.AVAILABLE:
-                Log.i(TAG, "当前GPS状态为可见状态");
-                break;
-            //GPS状态为服务区外时
-            case LocationProvider.OUT_OF_SERVICE:
-                Log.i(TAG, "当前GPS状态为服务区外状态");
-                break;
-            //GPS状态为暂停服务时
-            case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                Log.i(TAG, "当前GPS状态为暂停服务状态");
-                break;
-        }
-    }
 
     private void init_permission() {
         if (getSdkVersionSix()) {
