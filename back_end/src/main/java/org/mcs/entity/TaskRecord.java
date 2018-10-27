@@ -3,9 +3,11 @@ package org.mcs.entity;
 /**
  * created by SunHongbin on 2018/10/26
  */
-public class Task {
+public class TaskRecord {
 
     private Long id;
+
+    private Long publisherId;
 
     private Long publishTime;
 
@@ -21,6 +23,14 @@ public class Task {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getPublisherId() {
+        return publisherId;
+    }
+
+    public void setPublisherId(Long publisherId) {
+        this.publisherId = publisherId;
     }
 
     public Long getPublishTime() {
@@ -57,8 +67,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "TaskRecord{" +
                 "id=" + id +
+                ", publisherId=" + publisherId +
                 ", publishTime=" + publishTime +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskLocation='" + taskLocation + '\'' +
