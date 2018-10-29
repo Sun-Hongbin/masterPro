@@ -25,7 +25,7 @@ import me.daei.soundmeter.service.HttpDataResponse;
 public class SignupActivity extends AppCompatActivity implements HttpDataResponse {
 
     private ProgressDialog progressDialog = null;
-    private String registerUrl = Urls.aliyunUrl + "/user/register";
+    private String registerUrl = Urls.localUrl + "/user/register";
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

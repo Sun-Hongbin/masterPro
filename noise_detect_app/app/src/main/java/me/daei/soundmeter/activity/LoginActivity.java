@@ -26,10 +26,9 @@ import me.daei.soundmeter.service.KeepLogin;
 
 public class LoginActivity extends AppCompatActivity implements HttpDataResponse {
 
-    private String loginUrl = Urls.aliyunUrl + "/user/login";
+    private String loginUrl = Urls.localUrl + "/user/login";
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
-    private boolean isLogin = false;
     private ProgressDialog progressDialog = null;
     private Handler handler = new Handler() {
         @Override
@@ -82,10 +81,7 @@ public class LoginActivity extends AppCompatActivity implements HttpDataResponse
             }
         });
 
-        isLogin = (boolean) KeepLogin.getParam(LoginActivity.this, KeepLogin.IS_LOGIN, false);
-        if (isLogin) {
-            finish();
-        }
+
     }
 
     public void login() {

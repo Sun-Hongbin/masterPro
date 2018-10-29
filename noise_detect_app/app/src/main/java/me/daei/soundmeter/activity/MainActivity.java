@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
         soundDiscView = findViewById(R.id.soundDiscView);
         File file = FileUtil.createTempFile("temp.amr");
         if (file != null) {
-            Log.v("file", "file =" + file.getAbsolutePath());
             startRecord(file);
         } else {
             Toast.makeText(getApplicationContext(), "创建文件失败", Toast.LENGTH_LONG).show();
@@ -252,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         map.put("userPhone", KeepLogin.getParam(this, "loginData","loginData"));
         DoUpload doUpload = new DoUpload();
         doUpload.doUpload_Db(dbUrl, map, null);//上传
-        Toast.makeText(this, "上传成功，感谢您的参与！分贝大小为：" +
+        Toast.makeText(this, "上传成功，感谢您的参与！分贝值：" +
                 value.getUploadDbValue().toString(), Toast.LENGTH_SHORT).show();
         value.setUploadDbValue(null);
     }

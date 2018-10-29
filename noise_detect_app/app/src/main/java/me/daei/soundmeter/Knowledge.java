@@ -44,9 +44,13 @@ public class Knowledge {
         return false;
     }*/
 
+
 /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("-MM-dd-HH-mm-ss");
     Date date = new Date(startTime);
     fileName =simpleDateFormat.format(date)+".txt";*/
 
 
+/*    java.net.ProtocolException: expected 7831 bytes but received 7927
+
+    文件不能一直录制，上传前和上传后大小不一致就报错了。*/
 }
