@@ -36,6 +36,9 @@
         <if test="ctime != null and != ''">
             and create_time like #{ctime}
         </if>
+        <if test="taskId != null and != ''">
+            and task_id = #{taskId}
+        </if>
     </select>
 
 </mapper>

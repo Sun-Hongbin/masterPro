@@ -18,7 +18,8 @@ CREATE TABLE `user` (
 CREATE TABLE `task_record` (
   `id` bigint NOT NULL AUTO_INCREMENT COMMENT '本条任务的Id',
   `publisher_id` BIGINT(20) NOT NULL COMMENT '用户id',
-  `publish_time` BIGINT(20) NOT NULL COMMENT '发布时间',
+  `ctime` BIGINT(20) NOT NULL COMMENT '发布时间',
+  `utime` BIGINT(20) NULL COMMENT '更新时间',
   `task_description` VARCHAR(150) NOT NULL COMMENT '任务描述',
   `task_location` VARCHAR(20) NOT NULL COMMENT '任务要求的执行地点',
   `task_execute_time` BIGINT(20) NOT NULL DEFAULT '0' COMMENT '任务要求的执行时间',

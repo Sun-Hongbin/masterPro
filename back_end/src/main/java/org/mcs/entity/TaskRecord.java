@@ -9,7 +9,9 @@ public class TaskRecord {
 
     private Long publisherId;
 
-    private Long publishTime;
+    private Long ctime;
+
+    private Long utime;
 
     private String taskDescription;
 
@@ -33,12 +35,20 @@ public class TaskRecord {
         this.publisherId = publisherId;
     }
 
-    public Long getPublishTime() {
-        return publishTime;
+    public Long getCtime() {
+        return ctime;
     }
 
-    public void setPublishTime(Long publishTime) {
-        this.publishTime = publishTime;
+    public void setCtime(Long ctime) {
+        this.ctime = ctime;
+    }
+
+    public Long getUtime() {
+        return utime;
+    }
+
+    public void setUtime(Long utime) {
+        this.utime = utime;
     }
 
     public String getTaskDescription() {
@@ -70,7 +80,8 @@ public class TaskRecord {
         return "TaskRecord{" +
                 "id=" + id +
                 ", publisherId=" + publisherId +
-                ", publishTime=" + publishTime +
+                ", ctime=" + ctime +
+                ", utime=" + utime +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskLocation='" + taskLocation + '\'' +
                 ", taskExecuteTime=" + taskExecuteTime +

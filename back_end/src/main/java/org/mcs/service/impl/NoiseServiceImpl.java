@@ -4,7 +4,7 @@ import org.mcs.dao.NoiseDao;
 import org.mcs.dao.UserDao;
 import org.mcs.entity.NoiseMessage;
 import org.mcs.entity.User;
-import org.mcs.service.CollectDb;
+import org.mcs.service.NoiseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -14,7 +14,7 @@ import java.util.List;
  * created by SunHongbin on 2018/10/20
  */
 @Service
-public class CollectDbImpl implements CollectDb {
+public class NoiseServiceImpl implements NoiseService {
 
     @Resource
     private UserDao userDao;
@@ -23,7 +23,7 @@ public class CollectDbImpl implements CollectDb {
     private NoiseDao noiseDao;
 
     @Override
-    public NoiseMessage createDbRecord(NoiseMessage noiseMessage, Long userPhone) {
+    public NoiseMessage create(NoiseMessage noiseMessage, Long userPhone) {
 
         User user = new User();
         user.setUserPhone(userPhone);

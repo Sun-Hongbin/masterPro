@@ -2,6 +2,7 @@ package org.mcs.web;
 
 import org.mcs.entity.User;
 import org.mcs.service.RegisterAndLogin;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
 
 /**
  * created by SunHongbin on 2018/10/16
@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @RequestMapping("/user")
 public class UserController {
 
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource
     private RegisterAndLogin registerAndLogin;
