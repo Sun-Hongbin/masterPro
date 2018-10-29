@@ -4,12 +4,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mcs.entity.NoiseMessage;
-import org.mcs.service.CollectDb;
+import org.mcs.service.NoiseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import sun.nio.ch.IOUtil;
 
 import javax.annotation.Resource;
 
@@ -17,8 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * created by SunHongbin on 2018/10/20
@@ -36,7 +33,7 @@ public class CollectDbImplTest {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Resource
-    private CollectDb collectDb;
+    private NoiseService collectDb;
 
     @Test
     public void createDbRecord() {
@@ -53,7 +50,7 @@ public class CollectDbImplTest {
                 //mp3的存储
                 byte[] bytes = IOUtils.toByteArray(new FileInputStream(file));
                 record.setMp3File(bytes);
-                collectDb.createDbRecord(record, 18500300866L);
+                collectDb.create(record, 18500300866L);
             } else {
                 System.out.println("文件不存在！");
             }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.mcs.dao.TaskDao">
+    <!-- 目的：为DAO接口方法提供sql语句配置 -->
+    <insert id="insert" parameterType="TaskRecord">
+        insert into task_record (publisher_id, ctime, utime, task_description,
+         task_location,task_execute_time)
+        values (#{publisherId}, #{ctime}, #{utime}, #{taskDescription}, #{taskLocation}, #{taskExecuteTime})
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="Long">
+        delete * from task_record
+        where id = #{id}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="TaskRecord">
+        update task_record
+        <set>
+            <if test="publisherId != null and != ''">
+               publisher_id = #{publisherId}
+            </if>
+            <if test="ctime != null and != ''">
+               ctime = #{ctime}
+            </if>
+            <if test="utime != null and != ''">
+               utime = #{utime}
+            </if>
+            <if test="taskDescription != null and != ''">
+               task_description = #{taskDescription}
+            </if>
+            <if test="taskLocation != null and != ''">
+               task_location = #{taskLocation}
+            </if>
+            <if test="taskExecuteTime != null and != ''">
+               task_execute_time = #{taskExecuteTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="querySelective" parameterType="TaskRecord" resultType="TaskRecord">
+        select * from task_record
+        where 1=1
+        <if test="publisherId != null and != ''">
+            and publisher_id like #{publisherId}
+        </if>
+        <if test="ctime != null and != ''">
+            and ctime like #{ctime}
+        </if>
+        <if test="utime != null and != ''">
+            and utime like #{utime}
+        </if>
+        <if test="taskDescription != null and != ''">
+            and task_description like #{taskDescription}
+        </if>
+        <if test="taskLocation != null and != ''">
+            and task_location like #{taskLocation}
+        </if>
+        <if test="taskExecuteTime != null and != ''">
+            and task_execute_time = #{taskExecuteTime}
+        </if>
+    </select>
+
+    <select id="queryByRangeOfTime" parameterType="Lang" resultType="TaskRecord">
+        select * from task_record
+        where utime >= #{minTime} and utime <![CDATA[ <= ]]> #{maxTime}
+        order by utime desc
+    </select>
+
+</mapper>
