@@ -23,7 +23,7 @@ public interface TaskService {
     TaskRecord getByTime(Long minTime, Long maxTime);
 
     //根据任务所在地点获取任务
-    List<TaskRecord> getByLocation(Double longtitude, Double latitude);
+    List<TaskRecord> getByLocation(Double longitude, Double latitude);
 
     //TODO 根据任务标签获取任务
     List<TaskRecord> getByTags(int tagNumbs);

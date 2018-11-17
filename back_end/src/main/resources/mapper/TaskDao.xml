@@ -6,8 +6,9 @@
     <!-- 目的：为DAO接口方法提供sql语句配置 -->
     <insert id="insert" parameterType="TaskRecord">
         insert into task_record (publisher_id, ctime, utime, task_description,
-         task_location,task_execute_time)
-        values (#{publisherId}, #{ctime}, #{utime}, #{taskDescription}, #{taskLocation}, #{taskExecuteTime})
+         task_location,task_longitude, task_latitude, task_execute_time)
+        values (#{publisherId}, #{ctime}, #{utime}, #{taskDescription},
+                #{taskLocation}, #{taskLongitude}, #{taskLatitude}, #{taskExecuteTime})
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="Long">
@@ -58,12 +59,18 @@
         <if test="taskLocation != null and != ''">
             and task_location like #{taskLocation}
         </if>
+        <if test="taskLocation != null and != ''">
+            and task_location = #{taskLocation}
+        </if>
+        <if test="taskLocation != null and != ''">
+            and task_longitude = #{taskLongitude}
+        </if>
         <if test="taskExecuteTime != null and != ''">
-            and task_execute_time = #{taskExecuteTime}
+            and task_latitude = #{taskLatitude}
         </if>
     </select>
 
-    <select id="queryByRangeOfTime" parameterType="Lang" resultType="TaskRecord">
+    <select id="queryByRangeOfTime" parameterType="Long" resultType="TaskRecord">
         select * from task_record
         where utime >= #{minTime} and utime <![CDATA[ <= ]]> #{maxTime}
         order by utime desc

@@ -31,7 +31,8 @@ public class taskServiceImpl implements TaskService {
     public TaskRecord create(TaskRecord taskRecord, Long userPhone) {
         //1、验证关键参数是否规范
         if (taskRecord.getTaskExecuteTime() == null || StringUtils.isBlank(taskRecord.getTaskDescription()) ||
-                StringUtils.isBlank(taskRecord.getTaskLocation())) {
+                StringUtils.isBlank(taskRecord.getTaskLocation()) || taskRecord.getTaskLongitude() == null ||
+                taskRecord.getTaskLatitude() == null) {
             logger.error("TaskService - create parameters error : ", taskRecord);
             return null;
         }
@@ -80,9 +81,9 @@ public class taskServiceImpl implements TaskService {
     }
 
     @Override
-    public TaskRecord getByTime(Long time, Long range) {
+    public TaskRecord getByTime(Long minTime, Long maxTime) {
         try {
-            taskDao.queryByRangeOfTime(time, range);
+            taskDao.queryByRangeOfTime(minTime, maxTime);
         } catch (Exception e) {
             logger.error("TaskService - getByTime: ", e);
         }
@@ -90,7 +91,7 @@ public class taskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskRecord> getByLocation(Double longtitude, Double latitude) {
+    public List<TaskRecord> getByLocation(Double longitude, Double latitude) {
         return null;
     }
 

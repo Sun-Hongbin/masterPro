@@ -40,7 +40,7 @@ public class CollectDbImplTest {
 
         NoiseMessage record = new NoiseMessage();
         record.setDb((int) Math.random() * 100);
-        record.setLongtitude(Math.random() + 116);
+        record.setLongitude(Math.random() + 116);
         record.setLatitude(Math.random() + 39);
         record.setCollectTime(System.currentTimeMillis());
 

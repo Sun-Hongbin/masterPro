@@ -16,7 +16,7 @@ public class NoiseMessage {
 
     private byte[] mp3File;
 
-    private Double longtitude;
+    private Double longitude;
 
     private Double latitude;
 
@@ -58,12 +58,12 @@ public class NoiseMessage {
         this.mp3File = mp3File;
     }
 
-    public Double getLongtitude() {
-        return longtitude;
+    public Double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(Double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public Double getLatitude() {
@@ -105,7 +105,7 @@ public class NoiseMessage {
                 ", userId=" + userId +
                 ", db=" + db +
                 ", mp3File=" + Arrays.toString(mp3File) +
-                ", longtitude=" + longtitude +
+                ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", collectTime=" + collectTime +
                 ", uploadTime=" + uploadTime +

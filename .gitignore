@@ -19,7 +19,7 @@
 *.tar.gz
 *.rar
 
-.idea/*
+back_end/.idea/*
 */target
 */*.iml
 

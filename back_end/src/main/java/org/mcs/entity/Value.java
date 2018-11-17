@@ -23,11 +23,11 @@ public class Value {
 
     private Long uploadTime;
 
-    private double longtitude;
+    private double longitude;
 
     private double latitude;
 
-    private Long userPhone;
+    private String userPhone;
 
     public float getDbCount() {
         return dbCount;
@@ -93,12 +93,12 @@ public class Value {
         this.uploadTime = uploadTime;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public double getLatitude() {
@@ -109,11 +109,11 @@ public class Value {
         this.latitude = latitude;
     }
 
-    public Long getUserPhone() {
+    public String getUserPhone() {
         return userPhone;
     }
 
-    public void setUserPhone(Long userPhone) {
+    public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
     }
 }

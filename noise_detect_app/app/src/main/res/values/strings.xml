@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">SoundMeter</string>
+    <string name="app_name">mcs_system</string>
+    <string name="startlocation">开始定位</string>
+    <string name="stoplocation">关闭定位</string>
 </resources>

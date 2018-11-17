@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/tools")
-public class DBController{
+public class DBController {
 
     private File audioFile;
     private String fileName = "temp1.amr";
@@ -30,9 +30,12 @@ public class DBController{
     @Resource
     private NoiseService collectDb;
 
-    @RequestMapping(value = "/db", method = RequestMethod.POST)
+    /**
+     * 传分贝值+录音文件（temp.amr）
+     */
+    @RequestMapping(value = "/db_File", method = RequestMethod.POST)
     @ResponseBody
-    public String collectDB(HttpServletRequest request) {
+    public String collectDBAndFile(HttpServletRequest request) {
 
         if (audioFile == null) {
             logger.error("传文件失败：" + audioFile);
@@ -52,6 +55,23 @@ public class DBController{
         return null;
     }
 
+    /**
+     * 只传分贝值
+     */
+    @RequestMapping(value = "/db", method = RequestMethod.POST)
+    @ResponseBody
+    public String collectDB(@RequestBody Value value) {
+
+        NoiseMessage record = new NoiseMessage();
+        record.setDb(value.getUploadDbValue());
+        record.setCollectTime(value.getCollectTime());
+        record.setLongitude(value.getLongitude());
+        record.setLatitude(value.getLatitude());
+        collectDb.create(record, Long.valueOf(value.getUserPhone()));
+
+        return "=====>>>collectDB success: " + record.toString();
+    }
+
     //http://localhost:8080/tools/map
     @RequestMapping(value = "/map", method = RequestMethod.POST)
     @ResponseBody
@@ -60,7 +80,7 @@ public class DBController{
         record.setCollectTime(value.getCollectTime());
         record.setUploadTime(value.getUploadTime());
         List<NoiseMessage> list = collectDb.formMap(record);
-        for(NoiseMessage noiseMessage:list){
+        for (NoiseMessage noiseMessage : list) {
             System.out.println(noiseMessage);
         }
         return "map";

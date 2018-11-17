@@ -1,5 +1,7 @@
 package org.mcs.entity;
 
+import java.util.Date;
+
 /**
  * created by SunHongbin on 2018/10/26
  */
@@ -15,9 +17,13 @@ public class TaskRecord {
 
     private String taskDescription;
 
-    private String taskLocation;
+    private String taskLocation;//TODO 这里传的值应该是在APP上地图检索后获得的经纬度值，这里为检索的字符串
 
-    private Long taskExecuteTime;
+    private Double taskLatitude;
+
+    private Double taskLongitude;
+
+    private Date taskExecuteTime;//TODO 这里应该是一个范围
 
     public Long getId() {
         return id;
@@ -67,11 +73,27 @@ public class TaskRecord {
         this.taskLocation = taskLocation;
     }
 
-    public Long getTaskExecuteTime() {
+    public Double getTaskLatitude() {
+        return taskLatitude;
+    }
+
+    public void setTaskLatitude(Double taskLatitude) {
+        this.taskLatitude = taskLatitude;
+    }
+
+    public Double getTaskLongitude() {
+        return taskLongitude;
+    }
+
+    public void setTaskLongitude(Double taskLongitude) {
+        this.taskLongitude = taskLongitude;
+    }
+
+    public Date getTaskExecuteTime() {
         return taskExecuteTime;
     }
 
-    public void setTaskExecuteTime(Long taskExecuteTime) {
+    public void setTaskExecuteTime(Date taskExecuteTime) {
         this.taskExecuteTime = taskExecuteTime;
     }
 
@@ -84,6 +106,8 @@ public class TaskRecord {
                 ", utime=" + utime +
                 ", taskDescription='" + taskDescription + '\'' +
                 ", taskLocation='" + taskLocation + '\'' +
+                ", taskLatitude=" + taskLatitude +
+                ", taskLongitude=" + taskLongitude +
                 ", taskExecuteTime=" + taskExecuteTime +
                 '}';
     }

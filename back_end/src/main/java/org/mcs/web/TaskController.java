@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * created by SunHongbin on 2018/10/29
@@ -20,12 +23,14 @@ public class TaskController {
 
     @RequestMapping(value = "list", method = RequestMethod.POST)
     @ResponseBody
-    public String publishTask(HttpServletRequest request) {
+    public String publishTask(HttpServletRequest request) throws Exception{
         TaskRecord taskRecord = new TaskRecord();
         String userPhone = request.getParameter("userPhone");
         taskRecord.setTaskDescription(request.getParameter("taskDescription"));
         taskRecord.setTaskLocation(request.getParameter("taskLocation"));
-        taskRecord.setTaskExecuteTime(Long.valueOf(request.getParameter("taskExecuteTime")));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //有异常需要抛出
+        taskRecord.setTaskExecuteTime(sdf.parse(request.getParameter("taskExecuteTime")));
         taskService.create(taskRecord, Long.valueOf(userPhone));
         return null;
     }
@@ -45,7 +50,7 @@ public class TaskController {
             @RequestParam(value = "publisher_id", required = false) Long publisherId,
             @RequestParam(value = "task_description", required = false) String taskDescription,
             @RequestParam(value = "task_location", required = false) String taskLocation,
-            @RequestParam(value = "task_execute_time", required = false) Long taskExecuteTime
+            @RequestParam(value = "task_execute_time", required = false) Date taskExecuteTime
     ) {
         TaskRecord taskRecord = new TaskRecord();
         taskRecord.setPublisherId(publisherId);
@@ -70,10 +75,10 @@ public class TaskController {
     @RequestMapping(value = "byLoc", method = RequestMethod.GET)
     @ResponseBody
     public void getByLocation(
-            @RequestParam(value = "longtitude") Double longtitude,
+            @RequestParam(value = "longitude") Double longitude,
             @RequestParam(value = "latitude") Double latitude
     ) {
-        taskService.getByLocation(longtitude, latitude);
+        taskService.getByLocation(longitude, latitude);
     }
 
 }

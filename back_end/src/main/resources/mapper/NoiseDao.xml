@@ -5,9 +5,9 @@
 <mapper namespace="org.mcs.dao.NoiseDao">
     <!-- 目的：为DAO接口方法提供sql语句配置 -->
     <insert id="insert" parameterType="NoiseMessage">
-        insert into noise_message (user_id, db, mp3_file, longtitude, latitude,
+        insert into noise_message (user_id, db, mp3_file, longitude, latitude,
          collect_time, upload_time, task_id)
-        values (#{userId}, #{db}, #{mp3File}, #{longtitude}, #{latitude},
+        values (#{userId}, #{db}, #{mp3File}, #{longitude}, #{latitude},
          #{collectTime}, #{uploadTime}, #{taskId})
     </insert>
 
