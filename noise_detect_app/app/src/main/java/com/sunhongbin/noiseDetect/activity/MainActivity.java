@@ -15,20 +15,16 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
-import com.baidu.location.Poi;
 import com.sunhongbin.noiseDetect.Entity.Urls;
 import com.sunhongbin.noiseDetect.Entity.Value;
 import com.sunhongbin.noiseDetect.service.FileUtil;
@@ -51,22 +47,15 @@ public class MainActivity extends AppCompatActivity {
     private static final int refreshTime = 100;
     private static final int DATA_UPLOAD_SUCESS = 0;
     private static final int DATA_UPLOAD_FAILURE = 1;
-
     private static final String TAG = "GpsActivity";
-    private Button mStopButton, mStartButton;
-    private ImageButton startLocation1;
-    private boolean isLocating = false;
-    private boolean mShowRequestPermission = true;//用户是否禁用权限
-    private boolean isCreateFile;//是否写入文件
-    private boolean isLogin = false;//是否已经登陆
-    private Long startTime;
-    private Value value = new Value();
-    private int sumOfDb;//分贝值总和
-    private int count;//计算采集分贝个数
-
-    private LocationService locationService;
+    private Button uploadButton, mStartButton, startLocation;
     private TextView LocationResult;
-    private Double lati, lonti;
+    private boolean isLocating, isLogin, isStartCollect, isSubmit = false;
+    private boolean mShowRequestPermission = true;//用户是否禁用权限
+    private Long startTime, collectTime, submitTime;
+    private Value value = new Value();
+    private int sumOfDb, count, btClkCount = 0;//分贝值总和,采集分贝个数
+    private LocationService locationService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
         init_permission();
 
         //1、button
-        mStopButton = findViewById(R.id.doUpload);
-        mStopButton.setOnClickListener(this::Onclick);
+        uploadButton = findViewById(R.id.doUpload);
+        uploadButton.setOnClickListener(this::Onclick);
         mStartButton = findViewById(R.id.start);
         mStartButton.setOnClickListener(this::Onclick);
-        startLocation1 = (ImageButton) findViewById(R.id.imageButton);
-        startLocation1.setOnClickListener(this::Onclick);
+        startLocation = findViewById(R.id.locate);
+        startLocation.setOnClickListener(this::Onclick);
         LocationResult = findViewById(R.id.textView1);
         LocationResult.setMovementMethod(ScrollingMovementMethod.getInstance());
 
@@ -101,22 +90,54 @@ public class MainActivity extends AppCompatActivity {
 
     public void Onclick(View view) {
         if (view.getId() == R.id.start) {
-            startTime = System.currentTimeMillis();
-            isCreateFile = true;
-            //获取系统时间作为文件名
-            value.setCollectTime(startTime);
-            Toast.makeText(this, "开始采集噪声…耗费时长3s...", Toast.LENGTH_SHORT).show();
-        }
-        if (view.getId() == R.id.doUpload) {
-            if (value.getUploadDbValue() != null) {
-                uploadData();//上传数据
+            switch (btClkCount) {
+                case 0:
+                    isStartCollect = true;
+                    startTime = System.currentTimeMillis();
+                    value.setCollectTime(startTime);
+                    mStartButton.setBackground(getResources().getDrawable(R.drawable.record_pause, null));
+                    Toast.makeText(this, "开始采集噪声...", Toast.LENGTH_SHORT).show();
+                    btClkCount = 1;//显示暂停图标
+                    break;
+                case 1:
+                    isStartCollect = false;
+                    value.setAvgOfDb(sumOfDb / count);
+                    value.setUploadDbValue(value.getAvgOfDb());
+                    collectTime = (System.currentTimeMillis() - startTime) / 1000;//更新初创建时间
+                    Log.i("sun", "平均值： " + value.getAvgOfDb() + " 和：" + sumOfDb + " 个数： " + count);
+                    //记录完一次后，初始化值
+                    value.setAvgOfDb(0);
+                    sumOfDb = 0;
+                    count = 1;
+                    btClkCount = 0;//显示启动图标
+                    mStartButton.setBackground(getResources().getDrawable(R.drawable.record_start, null));
+                    break;
             }
         }
-        if (view.getId() == R.id.imageButton) {
+        if (view.getId() == R.id.doUpload) {
+            if (isSubmit) {
+                //不是第一次提交
+                if (value.getUploadDbValue() != null) {
+                    Log.i("sun", "" + value.getUploadDbValue() + " " + value.getLatitude());
+                    uploadData();//上传数据
+                } else {
+                    Toast.makeText(this, "请采集最新数据", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                //第一次提交
+                if (value.getUploadDbValue() != null) {
+                    Log.i("sun", "" + value.getUploadDbValue() + " " + value.getLatitude());
+                    uploadData();//上传数据
+                } else {
+                    Toast.makeText(this, "采集音频数据后提交", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        if (view.getId() == R.id.locate) {
             if (isLocating) {
                 locationService.stop();
                 isLocating = false;
-                logMsg("点击图标开启地图定位");
+                logMsg("点击左侧图标可开启地图定位\n\n点击中间图标开始采集数据\n\n点击右侧图标上传噪声数据");
             } else {
                 locationService.start();
                 isLocating = true;
@@ -137,19 +158,13 @@ public class MainActivity extends AppCompatActivity {
                     if (volume > 0 && volume < 1000000) {
                         Value.setDbCount(20 * (float) (Math.log10(volume)));  //将声压值转为分贝值
                         //进行写文件操作
-                        if (isCreateFile == true) {
+                        if (isStartCollect == true) {
                             int dbValue = (int) Value.getDbCount();
                             long interval = System.currentTimeMillis() - startTime;
                             count++;
                             sumOfDb += dbValue;
                             Log.i("sun", String.valueOf(dbValue) + " interval: " + String.valueOf(interval) +
                                     " 当前为第" + count + "个数据" + " sumOfDb和为" + sumOfDb + "\n");
-                            if (interval > 3000) {
-                                value.setAvgOfDb(sumOfDb / count);
-                                Log.i("sun", "平均值： " + value.getAvgOfDb() + " 和：" + sumOfDb + " 个数： " + count);
-                                value.setUploadDbValue(value.getAvgOfDb());
-                                initValues(value);
-                            }
                         }
                         soundDiscView.refresh();
                     }
@@ -157,9 +172,11 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
                 case DATA_UPLOAD_SUCESS:
-                    Toast.makeText(MainActivity.this, "上传成功，感谢您的参与！分贝值：" +
-                            value.getUploadDbValue().toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "分贝值：" + value.getUploadDbValue().toString() +
+                            "\n音频时长：" + collectTime + "s\n上传成功，谢谢参与！",
+                            Toast.LENGTH_SHORT).show();
                     value.setUploadDbValue(null);
+                    isSubmit = true;
                     break;
                 case DATA_UPLOAD_FAILURE:
                     Toast.makeText(MainActivity.this, "OnFailure: 请检查网络",
@@ -222,23 +239,14 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    //重新初始化值
-    public void initValues(Value value) {
-        startTime = System.currentTimeMillis();//更新初创建时间
-//        buffer.setLength(0);//buffer清空
-        value.setAvgOfDb(0);
-        sumOfDb = 0;
-        count = 0;
-        isCreateFile = false;
-    }
-
     public void uploadData() {
+
         if (value.getUploadDbValue() == null) {
             Toast.makeText(this, "麦克风不工作，请重新启动应用", Toast.LENGTH_LONG).show();
             return;
         }
-        if (System.currentTimeMillis() - value.getFreshLctTime() > 10000) {
-            Toast.makeText(this, "离上一次位置刷新已超过10s，请重新定位", Toast.LENGTH_LONG).show();
+        if (System.currentTimeMillis() - value.getFreshLctTime() > 300000) {
+            Toast.makeText(this, "距离上次位置刷新已超过30s，请重新定位", Toast.LENGTH_LONG).show();
             return;
         }
 //        Map map = new HashMap();
@@ -388,19 +396,19 @@ public class MainActivity extends AppCompatActivity {
 
                 StringBuffer sb = new StringBuffer(256);
                 /*sb.append("time : ");
-                *//**
+                 *//**
                  * 时间也可以使用systemClock.elapsedRealtime()方法 获取的是自从开机以来，每次回调的时间；
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  *//*
                 sb.append(location.getTime());*/
                 sb.append("\n定位类型：");// *****对应的定位类型说明*****
                 sb.append(location.getLocTypeDescription());
-                sb.append("\n纬度：");// 纬度
-                sb.append(location.getLatitude());
-                value.setLatitude(location.getLatitude());
                 sb.append("\n经度：");// 经度
                 sb.append(location.getLongitude());
                 value.setLongitude(location.getLongitude());
+                sb.append("   纬度：");// 纬度
+                sb.append(location.getLatitude());
+                value.setLatitude(location.getLatitude());
                 sb.append("\n半径：");// 半径
                 sb.append(location.getRadius());
                 sb.append(location.getStreet());
@@ -408,17 +416,17 @@ public class MainActivity extends AppCompatActivity {
                 sb.append(location.getAddrStr());
                 sb.append("\n用户室内外判断结果：");// *****返回用户室内外判断结果*****
                 sb.append(location.getUserIndoorState());
-                sb.append("\n方向(not all devices have value): ");
-                sb.append(location.getDirection());// 方向
-                sb.append("\n位置语义化信息：");
-                sb.append(location.getLocationDescribe());// 位置语义化信息
-                sb.append("\nPOI信息：");// POI信息
-                if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
-                    for (int i = 0; i < location.getPoiList().size(); i++) {
-                        Poi poi = (Poi) location.getPoiList().get(i);
-                        sb.append(poi.getName() + ";");
-                    }
-                }
+//                sb.append("\n方向(not all devices have value): ");
+//                sb.append(location.getDirection());// 方向
+//                sb.append("\n位置语义化信息：");
+//                sb.append(location.getLocationDescribe());// 位置语义化信息
+//                sb.append("\nPOI信息：");// POI信息
+//                if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
+//                    for (int i = 0; i < location.getPoiList().size(); i++) {
+//                        Poi poi = (Poi) location.getPoiList().get(i);
+//                        sb.append(poi.getName() + ";");
+//                    }
+//                }
                 if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
                     sb.append("\n速度 单位：km/h: ");
                     sb.append(location.getSpeed());// 速度 单位：km/h
@@ -432,12 +440,12 @@ public class MainActivity extends AppCompatActivity {
                     sb.append("gps定位成功");
                 } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                     // 运营商信息
-                    if (location.hasAltitude()) {// *****如果有海拔高度*****
-                        sb.append("\nheight : ");
-                        sb.append(location.getAltitude());// 单位：米
-                    }
-                    sb.append("\noperationers : ");// 运营商信息
-                    sb.append(location.getOperators());
+//                    if (location.hasAltitude()) {// *****如果有海拔高度*****
+//                        sb.append("\nheight : ");
+//                        sb.append(location.getAltitude());// 单位：米
+//                    }
+//                    sb.append("\n运营商信息：");// 运营商信息
+//                    sb.append(location.getOperators());
                     sb.append("\ndescribe : ");
                     sb.append("网络定位成功");
                 } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果

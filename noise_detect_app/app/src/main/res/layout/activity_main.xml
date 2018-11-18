@@ -8,57 +8,88 @@
 
     <com.sunhongbin.noiseDetect.widget.SoundDiscView
         android:id="@+id/soundDiscView"
-        android:layout_width="300dp"
-        android:layout_height="320dp"
+        android:layout_width="250dp"
+        android:layout_height="260dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/noise_disc" />
 
-    <Button
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="204dp"
-        android:layout_marginRight="204dp"
-        android:layout_marginBottom="36dp"
-        android:text="开始收集" />
-
-    <Button
-        android:id="@+id/doUpload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="210dp"
-        android:layout_marginLeft="210dp"
-        android:layout_marginBottom="36dp"
-        android:text="上传数据" />
-
-    <TextView
-        android:id="@+id/textView1"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="297dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginBottom="65dp"
-        android:layout_weight="2.89"
-        android:scrollbars="vertical"
-        android:text=" "
-        android:textColor="#000000" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/soundDiscView">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/start"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="28dp"
-        android:layout_toEndOf="@+id/doUpload"
-        app:srcCompat="@android:drawable/ic_menu_mylocation" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:paddingLeft="10dp"
+            android:paddingTop="2dp"
+            android:paddingRight="10dp"
+            android:text=""
+            android:textColor="#000000" />
+
+<!--        <ImageView
+            android:id="@+id/locate"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_above="@id/RelativeLayout2"
+            app:srcCompat="@drawable/location" />-->
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/start">
+
+                <Button
+                    android:id="@+id/locate"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/location" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/start"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/record_start" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/start">
+
+                <Button
+                    android:id="@+id/doUpload"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/upload" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </RelativeLayout>
+

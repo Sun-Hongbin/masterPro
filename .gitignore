@@ -18,6 +18,8 @@
 *.zip
 *.tar.gz
 *.rar
+*.apk
+*/output.json
 
 back_end/.idea/*
 */target
