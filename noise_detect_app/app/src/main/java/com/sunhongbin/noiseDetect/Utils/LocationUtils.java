@@ -1,4 +1,4 @@
-package com.sunhongbin.noiseDetect.service;
+package com.sunhongbin.noiseDetect.Utils;
 
 public class LocationUtils {
 	public final static String CoorType_GCJ02 = "gcj02";

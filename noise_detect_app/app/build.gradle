@@ -33,10 +33,21 @@ dependencies {
     api group: 'com.android.support', name: 'design', version: '26.1.0'
     api group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.10.0'
     api 'com.google.code.gson:gson:2.8.1'
-    //bind findbyid
+    // bind findbyid
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    //baidu map
+    // baidu map
     implementation files('libs/BaiduLBS_Android.jar')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    // 点击FAB弹出子菜单的特效
+    api 'com.getbase:floatingactionbutton:1.10.1'
+    // 圆形头像特效
+    api 'de.hdodenhof:circleimageview:2.1.0'
+    // 右滑返回上一界面
+    api 'me.imid.swipebacklayout.lib:library:1.1.0'
+    // 批量设置字体框架
+    api group: 'uk.co.chrisjenx', name: 'calligraphy', version: '2.3.0'
+    //时间选择器
+    api 'com.contrarywind:Android-PickerView:4.1.6'
+
 }

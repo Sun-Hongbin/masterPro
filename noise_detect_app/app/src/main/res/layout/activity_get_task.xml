@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:adroid="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    adroid:layout_width="match_parent"
+    adroid:layout_height="match_parent"
+    adroid:background="@null">
+
+    <android.support.v7.widget.Toolbar
+        adroid:id="@+id/toolbar"
+        adroid:layout_width="match_parent"
+        adroid:layout_height="46dp"
+        adroid:layout_alignParentTop="true"
+        adroid:background="@drawable/border_bottom"
+        app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            adroid:id="@+id/head_quick"
+            adroid:layout_width="wrap_content"
+            adroid:layout_height="wrap_content"
+            adroid:layout_gravity="center"
+            adroid:layout_marginTop="5dp"
+            adroid:layout_marginBottom="5dp"
+            adroid:src="@drawable/pic_head" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        adroid:id="@+id/task_message_text"
+        adroid:layout_width="match_parent"
+        adroid:layout_height="wrap_content"
+        adroid:layout_below="@id/toolbar"
+        adroid:layout_margin="10dp"
+        adroid:background="@null"
+        adroid:gravity="top"
+        adroid:hint="@string/hint_quick"
+        adroid:textColor="@color/black"
+        adroid:textCursorDrawable="@null"
+        adroid:textSize="16sp" />
+
+
+</RelativeLayout>

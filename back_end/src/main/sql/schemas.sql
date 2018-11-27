@@ -22,9 +22,10 @@ CREATE TABLE `task_record` (
   `utime` BIGINT(20) NULL COMMENT '更新时间',
   `task_description` VARCHAR(150) NOT NULL COMMENT '任务描述',
   `task_location` VARCHAR(20) NOT NULL COMMENT '任务要求的执行地点',
-  `task_longitude` decimal (15,8) NOT NULL DEFAULT '0.00000000' COMMENT '任务地点对应的经度',
-  `task_latitude` decimal (15,8) NOT NULL DEFAULT '0.00000000' COMMENT '任务地点对应的纬度',
-  `task_execute_time` TIMESTAMP NOT NULL COMMENT '任务要求的执行时间',
+  `task_longitude` decimal (15,8) COMMENT '任务地点对应的经度',
+  `task_latitude` decimal (15,8) COMMENT '任务地点对应的纬度',
+  `task_start_time` TIMESTAMP NOT NULL COMMENT '任务要求的开始执行时间',
+  `task_end_time` TIMESTAMP NOT NULL COMMENT '任务要求的截止执行时间',
   PRIMARY KEY (`id`),
   KEY `FK_PUBLISHER_idx` (`publisher_id`),
   CONSTRAINT `FK_RECORD` FOREIGN KEY (`publisher_id`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION

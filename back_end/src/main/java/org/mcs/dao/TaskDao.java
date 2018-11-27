@@ -15,7 +15,7 @@ public interface TaskDao {
 
     int updateByPrimaryKeySelective(TaskRecord record);
 
-    List<TaskRecord> querySelective(TaskRecord record);
+    List<TaskRecord> selectSelective(TaskRecord record);
 
     List<TaskRecord> queryByRangeOfTime(Long minTime, Long maxTime);
 }

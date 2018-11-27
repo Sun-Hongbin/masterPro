@@ -11,7 +11,7 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 
 import com.sunhongbin.noiseDetect.R;
-import com.sunhongbin.noiseDetect.service.ScreenUtil;
+import com.sunhongbin.noiseDetect.Utils.ScreenUtil;
 import com.sunhongbin.noiseDetect.Entity.Value;
 
 /**

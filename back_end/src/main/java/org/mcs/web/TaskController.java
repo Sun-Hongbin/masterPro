@@ -4,12 +4,15 @@ import org.mcs.entity.TaskRecord;
 import org.mcs.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * created by SunHongbin on 2018/10/29
@@ -21,21 +24,30 @@ public class TaskController {
     @Resource
     private TaskService taskService;
 
-    @RequestMapping(value = "list", method = RequestMethod.POST)
+    @RequestMapping(value = "/publish", method = RequestMethod.POST,
+            produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String publishTask(HttpServletRequest request) throws Exception{
-        TaskRecord taskRecord = new TaskRecord();
-        String userPhone = request.getParameter("userPhone");
-        taskRecord.setTaskDescription(request.getParameter("taskDescription"));
-        taskRecord.setTaskLocation(request.getParameter("taskLocation"));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        //有异常需要抛出
-        taskRecord.setTaskExecuteTime(sdf.parse(request.getParameter("taskExecuteTime")));
-        taskService.create(taskRecord, Long.valueOf(userPhone));
+    public String publishTask(@RequestBody TaskRecord record) {
+        try {
+            TaskRecord taskRecord = new TaskRecord();
+            taskRecord.setTaskDescription(record.getTaskDescription());
+            taskRecord.setTaskLocation(record.getTaskLocation());
+            Date startTimeDate = record.getTaskStartTime();
+            Date endTimeDate = record.getTaskEndTime();
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String startTime = format.format(startTimeDate);
+            String endTime = format.format(endTimeDate);
+            taskRecord.setTaskStartTime(startTime);
+            taskRecord.setTaskEndTime(endTime);
+            taskService.create(taskRecord, record.getUserPhone());
+            return "success!!!";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
-    @RequestMapping(value = "delete", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     @ResponseBody
     public boolean deleteTask(@RequestParam(value = "id") Long id) {
         if (taskService.removeById(id) == false) {
@@ -44,7 +56,7 @@ public class TaskController {
         return true;
     }
 
-    @RequestMapping(value = "update", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
     @ResponseBody
     public boolean changeTask(
             @RequestParam(value = "publisher_id", required = false) Long publisherId,
@@ -56,14 +68,31 @@ public class TaskController {
         taskRecord.setPublisherId(publisherId);
         taskRecord.setTaskDescription(taskDescription);
         taskRecord.setTaskLocation(taskLocation);
-        taskRecord.setTaskExecuteTime(taskExecuteTime);
         if (taskService.changeByIdSelective(taskRecord) == true) {
             System.out.println("成功更新");
         }
         return false;
     }
 
-    @RequestMapping(value = "byTime", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET,
+            produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+    public void listAllTask() throws Exception {
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        PrintWriter writer = response.getWriter();
+        TaskRecord taskRecord = new TaskRecord();
+        List<TaskRecord> taskRecords = taskService.getTaskByMultiCondition(taskRecord);
+        if (taskRecords == null) {
+            writer.write("当前无任务需求");
+            return;
+        } else {
+            writer.write(taskRecords.toString());
+        }
+        writer.flush();
+        writer.close();
+    }
+
+    @RequestMapping(value = "/byTime", method = RequestMethod.GET)
     @ResponseBody
     public void getTaskByTime(
             @RequestParam(value = "min_time") Long minTime,
@@ -72,7 +101,7 @@ public class TaskController {
         taskService.getByTime(minTime, maxTime);
     }
 
-    @RequestMapping(value = "byLoc", method = RequestMethod.GET)
+    @RequestMapping(value = "/byLoc", method = RequestMethod.GET)
     @ResponseBody
     public void getByLocation(
             @RequestParam(value = "longitude") Double longitude,

@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import com.sunhongbin.noiseDetect.Entity.TaskRecord;
 import com.sunhongbin.noiseDetect.Entity.User;
 import com.sunhongbin.noiseDetect.Entity.Value;
 
@@ -20,7 +21,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.sunhongbin.noiseDetect.service.FileUtil.REC_PATH;
+import static com.sunhongbin.noiseDetect.Utils.FileUtil.REC_PATH;
 
 /**
  * Created by SunHongbin on 2018/10/20
@@ -76,7 +77,8 @@ public class DoUpload {
     //登陆时传用户信息
     public void doUpload_Login(String url, HttpDataResponse httpDataResponse) {
         Request.Builder builder = new Request.Builder();
-        Request request = builder.get()
+        Request request = builder
+                .get()
                 .url(url)
                 .build();
         executeRequest(request, httpDataResponse);
@@ -94,6 +96,24 @@ public class DoUpload {
         executeRequest(request, httpDataResponse);
     }
 
+    public void doUpload_TaskMessage(TaskRecord task, String url, HttpDataResponse httpDataResponse) {
+        String json = gson.toJson(task);
+        Log.i("sun", "doUpload_TaskMessage: " + json);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), json);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        executeRequest(request, httpDataResponse);
+    }
+
+    public void getTaskMessage(String url) {
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+    }
+
     public void executeRequest(Request request, HttpDataResponse httpDataResponse) {
 
         //4、将Request封装为call
@@ -104,7 +124,7 @@ public class DoUpload {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                LogUtils.e("onFailure: " + e.getMessage());
+                Log.e("sun", "onFailure: " + e.getMessage());
                 e.printStackTrace();
                 httpDataResponse.onNoReceiveDataResponse(e);
                 //TODO: Internet 404 resolve
@@ -114,7 +134,8 @@ public class DoUpload {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String res = response.body().string();
-                LogUtils.e("onResponse: " + res);
+                Log.e("sun", "onResponse: " + res);
+
                 httpDataResponse.onDataResponse(res, null);
             }
 
