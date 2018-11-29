@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.OnTimeSelectChangeListener;
@@ -46,7 +44,6 @@ import butterknife.ButterKnife;
 public class PublishTaskActivity extends BaseActivity implements View.OnClickListener {
 
     private TaskRecord taskRecord = new TaskRecord();
-    private Button publishButton, startTimePicker, endTimePicker;
     private TimePickerView pvTime;
     private int flag;
     private int year, month, day, hour, minute;
@@ -64,6 +61,14 @@ public class PublishTaskActivity extends BaseActivity implements View.OnClickLis
     TextView endTimeText;
     @BindView(R.id.date_create)
     TextView date_view;
+    @BindView(R.id.title_toolbar)
+    TextView title;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.start_time_id)
+    Button startTimePicker;
+    @BindView(R.id.end_time_id)
+    Button endTimePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,6 @@ public class PublishTaskActivity extends BaseActivity implements View.OnClickLis
 
     private void init() {
 
-        TextView title = (TextView) findViewById(R.id.title_toolbar);
         title.setText("发布新任务");
 
         initTimePicker();        //初始化时间选择器
@@ -93,9 +97,7 @@ public class PublishTaskActivity extends BaseActivity implements View.OnClickLis
 
         date_view.setText(getDetailDate());
 
-        startTimePicker = (Button) findViewById(R.id.start_time_id);
         startTimePicker.setOnClickListener(this::onClick);
-        endTimePicker = (Button) findViewById(R.id.end_time_id);
         endTimePicker.setOnClickListener(this::onClick);
 
         Button btn_red = (Button) findViewById(R.id.btn_red);
@@ -106,9 +108,7 @@ public class PublishTaskActivity extends BaseActivity implements View.OnClickLis
         btn_green.setOnClickListener(this);
     }
 
-
     private void init_toolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.menu_publish);//设置右上角的填充菜单
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

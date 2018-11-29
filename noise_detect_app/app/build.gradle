@@ -49,5 +49,7 @@ dependencies {
     api group: 'uk.co.chrisjenx', name: 'calligraphy', version: '2.3.0'
     //时间选择器
     api 'com.contrarywind:Android-PickerView:4.1.6'
+    //listView侧滑(删除等)效果
+    api 'com.baoyz.swipemenulistview:library:1.3.0'
 
 }

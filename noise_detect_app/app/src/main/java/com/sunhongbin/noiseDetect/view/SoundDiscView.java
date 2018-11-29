@@ -1,4 +1,4 @@
-package com.sunhongbin.noiseDetect.widget;
+package com.sunhongbin.noiseDetect.view;
 
 import android.content.Context;
 import android.graphics.Bitmap;

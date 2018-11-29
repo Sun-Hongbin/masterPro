@@ -1,11 +1,14 @@
 package com.sunhongbin.noiseDetect.Entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * created by SunHongbin on 2018/10/26
  */
-public class TaskRecord {
+public class TaskRecord implements Parcelable {
 
     private Long id;
 
@@ -133,4 +136,87 @@ public class TaskRecord {
                 ", userPhone='" + userPhone + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.taskDescription);
+        dest.writeString(this.taskLocation);
+        dest.writeString(this.taskStartTime);
+    }
+
+    public static final Creator<TaskRecord> CREATOR = new Creator<TaskRecord>() {
+        @Override
+        public TaskRecord createFromParcel(Parcel source) {
+            return null;
+        }
+
+        @Override
+        public TaskRecord[] newArray(int size) {
+            return new TaskRecord[size];
+        }
+    };
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

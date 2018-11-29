@@ -107,11 +107,12 @@ public class DoUpload {
         executeRequest(request, httpDataResponse);
     }
 
-    public void getTaskMessage(String url) {
+    public void getTaskMessage(String url, HttpDataResponse httpDataResponse) {
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
+        executeRequest(request, httpDataResponse);
     }
 
     public void executeRequest(Request request, HttpDataResponse httpDataResponse) {

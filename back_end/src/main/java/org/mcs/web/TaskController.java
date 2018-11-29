@@ -1,5 +1,6 @@
 package org.mcs.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mcs.entity.TaskRecord;
 import org.mcs.service.TaskService;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/task")
 public class TaskController {
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     @Resource
     private TaskService taskService;
@@ -74,19 +77,19 @@ public class TaskController {
         return false;
     }
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET,
-            produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public void listAllTask() throws Exception {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        PrintWriter writer = response.getWriter();
-        TaskRecord taskRecord = new TaskRecord();
-        List<TaskRecord> taskRecords = taskService.getTaskByMultiCondition(taskRecord);
+        response.setContentType("application/json;charset=UTF-8");
+        PrintWriter writer = response.getWriter();//该行打印出json结果
+        List<TaskRecord> taskRecords = taskService.getTaskByMultiCondition(null);
+
+        String ljson = objectMapper.writeValueAsString(taskRecords);
         if (taskRecords == null) {
-            writer.write("当前无任务需求");
-            return;
+            writer.write("select no results");
         } else {
-            writer.write(taskRecords.toString());
+            writer.write(ljson);
         }
         writer.flush();
         writer.close();

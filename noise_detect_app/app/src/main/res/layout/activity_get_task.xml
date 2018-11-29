@@ -1,41 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:adroid="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    adroid:layout_width="match_parent"
-    adroid:layout_height="match_parent"
-    adroid:background="@null">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null">
 
     <android.support.v7.widget.Toolbar
-        adroid:id="@+id/toolbar"
-        adroid:layout_width="match_parent"
-        adroid:layout_height="46dp"
-        adroid:layout_alignParentTop="true"
-        adroid:background="@drawable/border_bottom"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/border_bottom"
         app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            adroid:id="@+id/head_quick"
-            adroid:layout_width="wrap_content"
-            adroid:layout_height="wrap_content"
-            adroid:layout_gravity="center"
-            adroid:layout_marginTop="5dp"
-            adroid:layout_marginBottom="5dp"
-            adroid:src="@drawable/pic_head" />
+        <TextView
+            android:id="@+id/get_task_title_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        adroid:id="@+id/task_message_text"
-        adroid:layout_width="match_parent"
-        adroid:layout_height="wrap_content"
-        adroid:layout_below="@id/toolbar"
-        adroid:layout_margin="10dp"
-        adroid:background="@null"
-        adroid:gravity="top"
-        adroid:hint="@string/hint_quick"
-        adroid:textColor="@color/black"
-        adroid:textCursorDrawable="@null"
-        adroid:textSize="16sp" />
+
+    <!--没有查到记录时显示该empty布局-->
+    <RelativeLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/icon_about"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="26dp"
+            android:layout_marginBottom="26dp"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/icon_about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="191dp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="30sp" />
+
+    </RelativeLayout>
+
+
+    <com.sunhongbin.noiseDetect.view.RecordScrollView
+        android:id="@+id/record_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_bottom">
+
+        <com.sunhongbin.noiseDetect.view.SwipeListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:divider="#FFF5EE"
+            android:dividerHeight="3dp">
+
+        </com.sunhongbin.noiseDetect.view.SwipeListView>
+
+    </com.sunhongbin.noiseDetect.view.RecordScrollView>
 
 
 </RelativeLayout>

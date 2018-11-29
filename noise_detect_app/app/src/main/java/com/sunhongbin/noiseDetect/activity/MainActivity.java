@@ -15,7 +15,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -44,11 +43,11 @@ import com.sunhongbin.noiseDetect.service.MyMediaRecorder;
 import com.sunhongbin.noiseDetect.R;
 import com.sunhongbin.noiseDetect.service.DoUpload;
 import com.sunhongbin.noiseDetect.service.KeepLogin;
-import com.sunhongbin.noiseDetect.widget.SoundDiscView;
+import com.sunhongbin.noiseDetect.view.SoundDiscView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String dbUrl = Urls.aliyunUrl + "/tools/db";
+    private static String dbUrl = Urls.t460Purl + "/tools/db";
 
     float volume = 10000;
     private SoundDiscView soundDiscView;
