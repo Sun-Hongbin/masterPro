@@ -3,16 +3,22 @@ package com.sunhongbin.noiseDetect.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -25,20 +31,23 @@ import java.util.List;
 
 import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.sunhongbin.noiseDetect.Entity.Urls;
 import com.sunhongbin.noiseDetect.Entity.Value;
-import com.sunhongbin.noiseDetect.service.FileUtil;
+import com.sunhongbin.noiseDetect.Utils.FileUtil;
+import com.sunhongbin.noiseDetect.Utils.MsgToastUtils;
 import com.sunhongbin.noiseDetect.service.HttpDataResponse;
 import com.sunhongbin.noiseDetect.service.LocationService;
 import com.sunhongbin.noiseDetect.service.MyMediaRecorder;
 import com.sunhongbin.noiseDetect.R;
 import com.sunhongbin.noiseDetect.service.DoUpload;
 import com.sunhongbin.noiseDetect.service.KeepLogin;
-import com.sunhongbin.noiseDetect.widget.SoundDiscView;
+import com.sunhongbin.noiseDetect.view.SoundDiscView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String dbUrl = Urls.aliyunUrl + "/tools/db";
+    private static String dbUrl = Urls.t460Purl + "/tools/db";
 
     float volume = 10000;
     private SoundDiscView soundDiscView;
@@ -52,15 +61,34 @@ public class MainActivity extends AppCompatActivity {
     private TextView LocationResult;
     private boolean isLocating, isLogin, isStartCollect, isSubmit = false;
     private boolean mShowRequestPermission = true;//用户是否禁用权限
-    private Long startTime, collectTime, submitTime;
+    private long startTime, collectTime, backPressFirst;
     private Value value = new Value();
     private int sumOfDb, count, btClkCount = 0;//分贝值总和,采集分贝个数
     private LocationService locationService;
+    //初始化
+    private String currentFolderName = "Mcs System";
+    private DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //此处运行耗时任务
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+        }).start();
+
         setContentView(R.layout.activity_main);
 
         //判断各种权限
@@ -79,14 +107,111 @@ public class MainActivity extends AppCompatActivity {
         //2、recorder
         mRecorder = new MyMediaRecorder();
 
-        //判断是否登陆
-        isLogin = (boolean) KeepLogin.getParam(this, KeepLogin.IS_LOGIN, false);
-        if (!isLogin) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
+        actionbarReset();
 
+        //初始化
+        fab_setting();
+        drawer_setting();
     }
+
+    public void actionbarReset(){
+        findViewById(R.id.headicon_main).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawer.openDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+
+    private void fab_setting() {
+
+        FloatingActionButton fab = findViewById(R.id.get_task_button_id);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //noteManager.add();
+                //关闭fab菜单
+                FloatingActionsMenu menu = findViewById(R.id.action_menu);
+                menu.collapse();
+
+                Intent intent = new Intent(MainActivity.this, GetTaskActivity.class);
+                intent.putExtra("currentFolderName", currentFolderName);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
+                findViewById(R.id.action_menu).bringToFront();
+            }
+        });
+
+        FloatingActionButton fab_quick = findViewById(R.id.publish_task_button_id);
+
+        fab_quick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //noteManager.add();
+                //关闭fab菜单
+                FloatingActionsMenu menu = findViewById(R.id.action_menu);
+                menu.collapse();
+
+                Intent intent = new Intent(MainActivity.this, PublishTaskActivity.class);
+                intent.putExtra("currentFolderName", currentFolderName);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
+                findViewById(R.id.action_menu).bringToFront();
+            }
+        });
+    }
+
+    private void drawer_setting() {
+
+        mDrawer = findViewById(R.id.drawer_layout);
+        NavigationView navigation = findViewById(R.id.navigation);
+        navigation.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+
+                switch (item.getTitle().toString()) {
+                    case "我的任务记录":
+//                        Intent intent = new Intent(MainActivity.this,FilesActivity.class);
+//                        startActivityForResult(intent,1);
+//                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                    case "最近撤销任务":
+//                        Intent intent1 = new Intent(MainActivity.this,RecycleActivity.class);
+//                        startActivity(intent1);
+//                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                        break;
+                    case "隐私安全":
+//                        Intent intent2 = new Intent(MainActivity.this,SecurityActivity.class);
+//                        intent2.putExtra("model",SecurityActivity.MODEL_EDIT);
+//                        startActivity(intent2);
+//                        overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+                        break;
+                    case "关于":
+                        Intent intent11 = new Intent(MainActivity.this, AboutActivity.class);
+                        startActivity(intent11);
+                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                        break;
+                    case "退出 MCS Share":
+                        System.exit(0);
+                    default:
+                        break;
+                }
+                mDrawer.closeDrawers();
+                return false;
+            }
+        });
+
+        Resources resource = getBaseContext().getResources();
+        ColorStateList csl = resource.getColorStateList(R.color.item_color_navgtin);
+        navigation.setItemTextColor(csl);
+
+        View view = navigation.inflateHeaderView(R.layout.nav_head);
+//        personalSet(view);//个人信息设置
+    }
+
 
     public void Onclick(View view) {
         if (view.getId() == R.id.start) {
@@ -173,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 case DATA_UPLOAD_SUCESS:
                     Toast.makeText(MainActivity.this, "分贝值：" + value.getUploadDbValue().toString() +
-                            "\n音频时长：" + collectTime + "s\n上传成功，谢谢参与！",
+                                    "\n音频时长：" + collectTime + "s\n上传成功，谢谢参与！",
                             Toast.LENGTH_SHORT).show();
                     value.setUploadDbValue(null);
                     isSubmit = true;
@@ -205,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "启动录音失败", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
-            Toast.makeText(this, "录音机已被占用或录音权限被禁止", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "录音权限被禁止或是录音机被占用", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
@@ -249,11 +374,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "距离上次位置刷新已超过30s，请重新定位", Toast.LENGTH_LONG).show();
             return;
         }
-//        Map map = new HashMap();
-//        map.put("longitude", ""+value.getLongitude());
-//        map.put("latitude", ""+value.getLatitude());
-//        map.put("db", value.getUploadDbValue().toString());
-//        map.put("userPhone", KeepLogin.getParam(this, "loginData", "loginData"));
         value.setLongitude(value.getLongitude());
         value.setLatitude(value.getLatitude());
         value.setCollectTime(startTime);
@@ -276,6 +396,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //------------ ask peemission ------------
 
     private void init_permission() {
         if (getSdkVersionSix()) {
@@ -324,12 +445,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+//------------ baidu map ------------
 
-    /**
-     * 显示请求字符串
-     *
-     * @param str
-     */
+    // 显示请求字符串
     public void logMsg(String str) {
         final String s = str;
         try {
@@ -370,9 +488,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /***
-     * Stop location service
-     */
+    //Stop location service
     @Override
     protected void onStop() {
         // TODO Auto-generated method stub
@@ -381,12 +497,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
     }
 
-
-    /*****
-     *
-     * 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
-     *
-     */
+    // 定位结果回调，重写onReceiveLocation方法，可以直接拷贝如下代码到自己工程中修改
     private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
 
         @Override
@@ -395,12 +506,6 @@ public class MainActivity extends AppCompatActivity {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
 
                 StringBuffer sb = new StringBuffer(256);
-                /*sb.append("time : ");
-                 *//**
-                 * 时间也可以使用systemClock.elapsedRealtime()方法 获取的是自从开机以来，每次回调的时间；
-                 * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
-                 *//*
-                sb.append(location.getTime());*/
                 sb.append("\n定位类型：");// *****对应的定位类型说明*****
                 sb.append(location.getLocTypeDescription());
                 sb.append("\n经度：");// 经度
@@ -416,36 +521,10 @@ public class MainActivity extends AppCompatActivity {
                 sb.append(location.getAddrStr());
                 sb.append("\n用户室内外判断结果：");// *****返回用户室内外判断结果*****
                 sb.append(location.getUserIndoorState());
-//                sb.append("\n方向(not all devices have value): ");
-//                sb.append(location.getDirection());// 方向
-//                sb.append("\n位置语义化信息：");
-//                sb.append(location.getLocationDescribe());// 位置语义化信息
-//                sb.append("\nPOI信息：");// POI信息
-//                if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
-//                    for (int i = 0; i < location.getPoiList().size(); i++) {
-//                        Poi poi = (Poi) location.getPoiList().get(i);
-//                        sb.append(poi.getName() + ";");
-//                    }
-//                }
                 if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                    sb.append("\n速度 单位：km/h: ");
-                    sb.append(location.getSpeed());// 速度 单位：km/h
-                    sb.append("\n卫星数目：");
-                    sb.append(location.getSatelliteNumber());// 卫星数目
-                    sb.append("\n海拔高度 单位：米：");
-                    sb.append(location.getAltitude());// 海拔高度 单位：米
-                    sb.append("\ngps质量判断：");
-                    sb.append(location.getGpsAccuracyStatus());// *****gps质量判断*****
                     sb.append("\ndescribe : ");
                     sb.append("gps定位成功");
                 } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-                    // 运营商信息
-//                    if (location.hasAltitude()) {// *****如果有海拔高度*****
-//                        sb.append("\nheight : ");
-//                        sb.append(location.getAltitude());// 单位：米
-//                    }
-//                    sb.append("\n运营商信息：");// 运营商信息
-//                    sb.append(location.getOperators());
                     sb.append("\ndescribe : ");
                     sb.append("网络定位成功");
                 } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
@@ -467,5 +546,23 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
+    //------------ System setup ------------
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                long backPressSecond = System.currentTimeMillis();
+                if (backPressSecond - backPressFirst > 2000) {
+                    MsgToastUtils.showMessageOnScreen(this, "再按一次返回键退出应用");
+                    backPressFirst = backPressSecond;
+                    return true;
+                } else {//两次按键少于2秒，退出应用
+                    System.exit(0);
+                }
+                break;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
 
 }

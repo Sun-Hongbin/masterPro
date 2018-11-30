@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/all_nav">
+        <menu>
+            <item
+                android:icon="@drawable/icon_publish_task"
+                android:title="@string/folder_nav" />
+            <item
+                android:icon="@drawable/pic_delete"
+                android:title="@string/recycle_nav" />
+            <item
+                android:icon="@drawable/pic_security"
+                android:title="@string/security_nav" />
+        </menu>
+    </item>
+
+    <item android:title="@string/other_nav">
+
+        <menu>
+            <item android:title="@string/about_nav" />
+            <item android:title="@string/exit_nav" />
+        </menu>
+    </item>
+
+
+</menu>

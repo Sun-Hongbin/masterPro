@@ -1,5 +1,7 @@
 package org.mcs.entity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -23,7 +25,15 @@ public class TaskRecord {
 
     private Double taskLongitude;
 
-    private Date taskExecuteTime;//TODO 这里应该是一个范围
+    private Date taskStartTime;
+
+    private Date taskEndTime;
+
+    //extra message: back to front end needed
+
+    private Long userPhone;
+
+    private String name;//userName
 
     public Long getId() {
         return id;
@@ -89,12 +99,48 @@ public class TaskRecord {
         this.taskLongitude = taskLongitude;
     }
 
-    public Date getTaskExecuteTime() {
-        return taskExecuteTime;
+    public Date getTaskStartTime() {
+        return taskStartTime;
     }
 
-    public void setTaskExecuteTime(Date taskExecuteTime) {
-        this.taskExecuteTime = taskExecuteTime;
+
+
+    public void setTaskStartTime(String taskStartTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            this.taskStartTime = dateFormat.parse(taskStartTime);
+        } catch (ParseException e) {
+            this.taskStartTime = null;
+        }
+    }
+
+    public Date getTaskEndTime() {
+        return taskEndTime;
+    }
+
+    public void setTaskEndTime(String taskEndTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            this.taskEndTime = dateFormat.parse(taskEndTime);
+        } catch (ParseException e) {
+            this.taskEndTime = null;
+        }
+    }
+
+    public Long getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(Long userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -108,7 +154,10 @@ public class TaskRecord {
                 ", taskLocation='" + taskLocation + '\'' +
                 ", taskLatitude=" + taskLatitude +
                 ", taskLongitude=" + taskLongitude +
-                ", taskExecuteTime=" + taskExecuteTime +
+                ", taskStartTime=" + taskStartTime +
+                ", taskEndTime=" + taskEndTime +
+                ", userPhone=" + userPhone +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

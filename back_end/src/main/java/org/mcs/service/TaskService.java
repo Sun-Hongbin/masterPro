@@ -19,6 +19,9 @@ public interface TaskService {
     //根据传入的信息动态的进行编辑更新
     Boolean changeByIdSelective(TaskRecord taskRecord);
 
+    //根据不同条件获取任务信息
+    List<TaskRecord> getTaskByMultiCondition(TaskRecord record);
+
     //根据时间段获取业务信息
     TaskRecord getByTime(Long minTime, Long maxTime);
 

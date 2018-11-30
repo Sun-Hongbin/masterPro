@@ -45,7 +45,8 @@
 
         <activity
             android:screenOrientation="portrait"
-            android:name="com.sunhongbin.noiseDetect.activity.MainActivity">
+            android:name="com.sunhongbin.noiseDetect.activity.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,8 +54,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.sunhongbin.noiseDetect.activity.AboutActivity"/>
+        <activity android:name="com.sunhongbin.noiseDetect.activity.GetTaskActivity"/>
         <activity android:name="com.sunhongbin.noiseDetect.activity.LoginActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name="com.sunhongbin.noiseDetect.activity.PublishTaskActivity"/>
+        <activity android:name="com.sunhongbin.noiseDetect.activity.SearchActivity"/>
         <activity android:name="com.sunhongbin.noiseDetect.activity.SignupActivity" android:theme="@style/AppTheme.Dark" />
+        <activity android:name="com.sunhongbin.noiseDetect.activity.UpdateHistoryActivity"/>
+        <activity android:name="com.sunhongbin.noiseDetect.activity.WelcomeActivity"/>
+
+
     </application>
 
 </manifest>

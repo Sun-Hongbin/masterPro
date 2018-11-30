@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -31,13 +32,13 @@ public class taskServiceImplTest {
 
         TaskRecord taskRecord = new TaskRecord();
         Date executeTime = new Date();
-        System.out.println("执行时间："+executeTime);//执行时间：Sat Nov 17 12:15:47 CST 2018
-        taskRecord.setTaskExecuteTime(executeTime);
+        System.out.println("执行时间：" + executeTime);//执行时间：Sat Nov 17 12:15:47 CST 2018
+//        taskRecord.setTaskStartTime(executeTime);
         taskRecord.setTaskDescription("检测9教南205室的噪声情况");
         taskRecord.setTaskLocation("中国北京市海淀区交通大学路3号院");
         taskRecord.setTaskLongitude(116.348617);
         taskRecord.setTaskLatitude(39.955292);
-        taskService.create(taskRecord, 18500300866L);
+//        taskService.create(taskRecord);
 
     }
 
@@ -59,5 +60,14 @@ public class taskServiceImplTest {
 
     @Test
     public void getByTags() {
+    }
+
+    @Test
+    public void getTaskByMultiCondition() {
+        TaskRecord taskRecord = new TaskRecord();
+        List<TaskRecord> list = taskService.getTaskByMultiCondition(taskRecord);
+        for (TaskRecord task : list) {
+            System.out.println(task);
+        }
     }
 }

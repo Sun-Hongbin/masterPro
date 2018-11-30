@@ -1,95 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.sunhongbin.noiseDetect.activity.MainActivity">
 
-    <com.sunhongbin.noiseDetect.widget.SoundDiscView
-        android:id="@+id/soundDiscView"
-        android:layout_width="250dp"
-        android:layout_height="260dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/noise_disc" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:background="@drawable/border_bottom"
+            app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/headicon_main"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/pic_head" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="MCS System"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+        </android.support.v7.widget.Toolbar>
+
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/soundDiscView">
+        android:layout_marginTop="56dp">
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="match_parent"
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/action_menu"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:paddingLeft="10dp"
-            android:paddingTop="2dp"
-            android:paddingRight="10dp"
-            android:text=""
-            android:textColor="#000000" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            fab:fab_addButtonColorNormal="@color/white"
+            fab:fab_addButtonColorPressed="@null"
+            fab:fab_addButtonPlusIconColor="@color/black"
+            fab:fab_labelStyle="@style/menu_labels_style">
 
-<!--        <ImageView
-            android:id="@+id/locate"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_above="@id/RelativeLayout2"
-            app:srcCompat="@drawable/location" />-->
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/get_task_button_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_get_task"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/blue"
+                fab:fab_size="mini"
+                fab:fab_title="获取任务" />
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/publish_task_button_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_publish_task"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/blue"
+                fab:fab_size="mini"
+                fab:fab_title="发布任务" />
+
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
         <RelativeLayout
-            android:id="@+id/RelativeLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp">
+            android:layout_height="match_parent">
+
+            <com.sunhongbin.noiseDetect.view.SoundDiscView
+                android:id="@+id/soundDiscView"
+                android:layout_width="250dp"
+                android:layout_height="260dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/noise_disc" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@id/start">
+                android:layout_height="match_parent"
+                android:layout_below="@id/soundDiscView">
 
-                <Button
-                    android:id="@+id/locate"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/location" />
+                    android:paddingLeft="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingRight="10dp"
+                    android:text=""
+                    android:textColor="#000000" />
+
+                <RelativeLayout
+                    android:id="@+id/RelativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@id/start"
+                        android:layout_marginLeft="10dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/centerReference">
+
+                            <Button
+                                android:id="@+id/locate"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/location" />
+                        </RelativeLayout>
+
+                        <ImageView
+                            android:id="@+id/centerReference"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_centerHorizontal="true" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/centerReference">
+
+                            <Button
+                                android:id="@+id/doUpload"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/upload" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/start"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/record_start" />
+
+                </RelativeLayout>
+
             </RelativeLayout>
-
-            <Button
-                android:id="@+id/start"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/record_start" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/start">
-
-                <Button
-                    android:id="@+id/doUpload"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:background="@drawable/upload" />
-            </RelativeLayout>
-
         </RelativeLayout>
 
     </RelativeLayout>
 
-</RelativeLayout>
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@null"
+        app:menu="@menu/menu_nav" />
+
+</android.support.v4.widget.DrawerLayout>
+
+
+
+
+
+
+
+
+
 

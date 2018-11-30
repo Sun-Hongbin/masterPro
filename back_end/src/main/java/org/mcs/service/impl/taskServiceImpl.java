@@ -30,9 +30,9 @@ public class taskServiceImpl implements TaskService {
     @Override
     public TaskRecord create(TaskRecord taskRecord, Long userPhone) {
         //1、验证关键参数是否规范
-        if (taskRecord.getTaskExecuteTime() == null || StringUtils.isBlank(taskRecord.getTaskDescription()) ||
-                StringUtils.isBlank(taskRecord.getTaskLocation()) || taskRecord.getTaskLongitude() == null ||
-                taskRecord.getTaskLatitude() == null) {
+        if (taskRecord.getTaskStartTime() == null || taskRecord.getTaskEndTime() == null ||
+                StringUtils.isBlank(taskRecord.getTaskDescription()) ||
+                StringUtils.isBlank(taskRecord.getTaskLocation())) {
             logger.error("TaskService - create parameters error : ", taskRecord);
             return null;
         }
@@ -62,9 +62,20 @@ public class taskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskRecord> getTaskByMultiCondition(TaskRecord record) {
+        try {
+            List<TaskRecord> list = taskDao.selectSelective(record);
+            return list;
+        } catch (Exception e) {
+            logger.error("TaskService -getTaskByMultiCondition error: ", e + "\n" + record.toString());
+        }
+        return null;
+    }
+
+    @Override
     public Boolean changeByIdSelective(TaskRecord taskRecord) {
         if (taskRecord.getPublisherId() == null ||
-                taskRecord.getTaskExecuteTime() == null ||
+                taskRecord.getTaskStartTime() == null || taskRecord.getTaskEndTime() == null ||
                 StringUtils.isBlank(taskRecord.getTaskDescription()) ||
                 StringUtils.isBlank(taskRecord.getTaskLocation())) {
             logger.error("changeByIdSelective lack of params");

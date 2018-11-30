@@ -26,7 +26,7 @@ import com.sunhongbin.noiseDetect.service.KeepLogin;
 
 public class LoginActivity extends AppCompatActivity implements HttpDataResponse {
 
-    private String loginUrl = Urls.aliyunUrl + "/user/login";
+    private String loginUrl = Urls.t460Purl + "/user/login";
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
     private ProgressDialog progressDialog = null;

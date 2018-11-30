@@ -6,9 +6,9 @@
     <!-- 目的：为DAO接口方法提供sql语句配置 -->
     <insert id="insert" parameterType="TaskRecord">
         insert into task_record (publisher_id, ctime, utime, task_description,
-         task_location,task_longitude, task_latitude, task_execute_time)
+         task_location,task_longitude, task_latitude, task_start_time, task_end_time)
         values (#{publisherId}, #{ctime}, #{utime}, #{taskDescription},
-                #{taskLocation}, #{taskLongitude}, #{taskLatitude}, #{taskExecuteTime})
+                #{taskLocation}, #{taskLongitude}, #{taskLatitude}, #{taskStartTime}, #{taskEndTime})
     </insert>
 
     <delete id="deleteByPrimaryKey" parameterType="Long">
@@ -20,53 +20,61 @@
         update task_record
         <set>
             <if test="publisherId != null and != ''">
-               publisher_id = #{publisherId}
+                publisher_id = #{publisherId}
             </if>
             <if test="ctime != null and != ''">
-               ctime = #{ctime}
+                ctime = #{ctime}
             </if>
             <if test="utime != null and != ''">
-               utime = #{utime}
+                utime = #{utime}
             </if>
             <if test="taskDescription != null and != ''">
-               task_description = #{taskDescription}
+                task_description = #{taskDescription}
             </if>
             <if test="taskLocation != null and != ''">
-               task_location = #{taskLocation}
+                task_location = #{taskLocation}
             </if>
-            <if test="taskExecuteTime != null and != ''">
-               task_execute_time = #{taskExecuteTime}
+            <if test="taskStartTime != null and != ''">
+                task_start_time = #{taskStartTime}
+            </if>
+            <if test="taskEndTime != null and != ''">
+                task_end_time = #{taskEndTime}
             </if>
         </set>
         where id = #{id}
     </update>
 
-    <select id="querySelective" parameterType="TaskRecord" resultType="TaskRecord">
-        select * from task_record
+    <select id="selectSelective" parameterType="TaskRecord" resultType="TaskRecord">
+        select t.* ,
+        u.name as name
+        from task_record t INNER JOIN user u ON t.publisher_id = u.id
         where 1=1
-        <if test="publisherId != null and != ''">
-            and publisher_id like #{publisherId}
+        <if test="publisherId != null">
+            and publisher_id = #{publisherId}
         </if>
-        <if test="ctime != null and != ''">
-            and ctime like #{ctime}
+        <if test="ctime != null">
+            and ctime = #{ctime}
         </if>
-        <if test="utime != null and != ''">
-            and utime like #{utime}
+        <if test="utime != null">
+            and utime = #{utime}
         </if>
-        <if test="taskDescription != null and != ''">
+        <if test="taskDescription != null">
             and task_description like #{taskDescription}
         </if>
-        <if test="taskLocation != null and != ''">
+        <if test="taskLocation != null">
             and task_location like #{taskLocation}
         </if>
-        <if test="taskLocation != null and != ''">
-            and task_location = #{taskLocation}
-        </if>
-        <if test="taskLocation != null and != ''">
+        <if test="taskLongitude != null">
             and task_longitude = #{taskLongitude}
         </if>
-        <if test="taskExecuteTime != null and != ''">
+        <if test="taskLatitude != null">
             and task_latitude = #{taskLatitude}
+        </if>
+        <if test="taskStartTime != null">
+            and task_start_time =#{taskStartTime}
+        </if>
+        <if test="taskEndTime != null">
+            and task_end_time =#{taskEndTime}
         </if>
     </select>
 
