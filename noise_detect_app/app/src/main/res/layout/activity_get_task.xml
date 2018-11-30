@@ -24,55 +24,68 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <!--没有查到记录时显示该empty布局-->
-    <RelativeLayout
-        android:id="@+id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/text_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/icon_about"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="26dp"
-            android:layout_marginBottom="26dp"
-            android:text="@string/app_name" />
-
-        <TextView
-            android:id="@+id/icon_about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="191dp"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="30sp" />
-
-    </RelativeLayout>
-
-
-    <com.sunhongbin.noiseDetect.view.RecordScrollView
-        android:id="@+id/record_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_bottom">
-
-        <com.sunhongbin.noiseDetect.view.SwipeListView
-            android:id="@+id/list_view"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:divider="#FFF5EE"
-            android:dividerHeight="3dp">
+            android:layout_marginTop="50dp">
 
-        </com.sunhongbin.noiseDetect.view.SwipeListView>
+            <!--没有查到记录时显示该empty布局-->
+            <RelativeLayout
+                android:id="@+id/rl_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+        >
 
-    </com.sunhongbin.noiseDetect.view.RecordScrollView>
+                    <TextView
+                        android:id="@+id/text_empty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/icon_about"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="26dp"
+                        android:layout_marginBottom="26dp"
+                        android:text="@string/app_name" />
+
+                    <TextView
+                        android:id="@+id/icon_about"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="191dp"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black"
+                        android:textSize="30sp" />
+
+
+            </RelativeLayout>
+
+
+        <com.sunhongbin.noiseDetect.view.RecordScrollView
+            android:id="@+id/record_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_bottom">
+
+            <com.sunhongbin.noiseDetect.view.SwipeListView
+                android:id="@+id/list_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:divider="#FFF5EE"
+                android:dividerHeight="3dp">
+
+            </com.sunhongbin.noiseDetect.view.SwipeListView>
+
+        </com.sunhongbin.noiseDetect.view.RecordScrollView>
+
+
+
+        </RelativeLayout>
+
 
 
 </RelativeLayout>
+
+

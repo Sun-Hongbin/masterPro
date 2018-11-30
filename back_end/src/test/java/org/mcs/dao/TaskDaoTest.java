@@ -23,8 +23,7 @@ public class TaskDaoTest {
     @Test
     public void selectSelective() {
         TaskRecord taskRecord = new TaskRecord();
-        taskRecord.setPublisherId(1001L);
-        List<TaskRecord> list = taskDao.selectSelective(taskRecord);
+        List<TaskRecord> list = taskDao.selectSelective(null);
         for (TaskRecord task : list) {
             System.out.println(task.toString());
         }

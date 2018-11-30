@@ -32,6 +32,8 @@ public class TaskRecord implements Parcelable {
 
     private Long userPhone;
 
+    private String name;
+
     public Long getId() {
         return id;
     }
@@ -120,6 +122,14 @@ public class TaskRecord implements Parcelable {
         this.userPhone = userPhone;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "TaskRecord{" +
@@ -131,9 +141,10 @@ public class TaskRecord implements Parcelable {
                 ", taskLocation='" + taskLocation + '\'' +
                 ", taskLatitude=" + taskLatitude +
                 ", taskLongitude=" + taskLongitude +
-                ", taskStartTime=" + taskStartTime +
-                ", taskEndTime=" + taskEndTime +
-                ", userPhone='" + userPhone + '\'' +
+                ", taskStartTime='" + taskStartTime + '\'' +
+                ", taskEndTime='" + taskEndTime + '\'' +
+                ", userPhone=" + userPhone +
+                ", name='" + name + '\'' +
                 '}';
     }
 

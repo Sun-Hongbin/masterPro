@@ -1,8 +1,10 @@
 package com.sunhongbin.noiseDetect.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -40,7 +42,7 @@ public class GetTaskActivity extends BaseActivity implements HttpDataResponse {
     private List<TaskRecord> mData;
     private TaskRecord[] taskRecords;
 
-    @BindView(R.id.empty)
+    @BindView(R.id.rl_empty)
     RelativeLayout empty;
     @BindView(R.id.text_empty)
     TextView info;
@@ -52,6 +54,7 @@ public class GetTaskActivity extends BaseActivity implements HttpDataResponse {
     Toolbar toolbar;
     @BindView(R.id.get_task_title_toolbar)
     TextView title;
+
 
     //handler处理UI更新，否则onResponse会闪退
     private Handler handler = new Handler() {
@@ -90,7 +93,7 @@ public class GetTaskActivity extends BaseActivity implements HttpDataResponse {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_task);
         ButterKnife.bind(this);
-        title.setText("当前任务列表");
+        actionbarSet();
         listView_setting();
     }
 
@@ -115,6 +118,25 @@ public class GetTaskActivity extends BaseActivity implements HttpDataResponse {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MsgToastUtils.showMessageOnScreen(GetTaskActivity.this, "打开文本");
+            }
+        });
+    }
+
+    public void actionbarSet() {
+        title.setText("当前任务列表");
+        toolbar.inflateMenu(R.menu.menu_search);//设置右上角的搜索
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                //不能用if判断语句
+                switch (item.getItemId()){
+                    case R.id.search_item:
+                        Intent intent = new Intent(GetTaskActivity.this,SearchActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                        break;
+                }
+                return false;
             }
         });
     }

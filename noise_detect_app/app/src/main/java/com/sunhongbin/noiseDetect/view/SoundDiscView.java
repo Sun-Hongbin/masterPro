@@ -69,7 +69,7 @@ public class SoundDiscView extends AppCompatImageView {
         }
         mMatrix.setRotate(getAngle(Value.getDbCount()), newWidth / 2, newHeight * 215 / 460);   //片相对位置
         canvas.drawBitmap(indicatorBitmap, mMatrix, paint);
-        canvas.drawText((int)Value.getDbCount()+" DB", newWidth/2,newHeight*36/46, paint); //图片相对位置
+        canvas.drawText((int)Value.getDbCount()+" DB", newWidth/2,newHeight*38/46, paint); //图片相对位置
     }
 
     private float getAngle(float db){

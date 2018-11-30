@@ -58,6 +58,7 @@
         <activity android:name="com.sunhongbin.noiseDetect.activity.GetTaskActivity"/>
         <activity android:name="com.sunhongbin.noiseDetect.activity.LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name="com.sunhongbin.noiseDetect.activity.PublishTaskActivity"/>
+        <activity android:name="com.sunhongbin.noiseDetect.activity.SearchActivity"/>
         <activity android:name="com.sunhongbin.noiseDetect.activity.SignupActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name="com.sunhongbin.noiseDetect.activity.UpdateHistoryActivity"/>
         <activity android:name="com.sunhongbin.noiseDetect.activity.WelcomeActivity"/>

@@ -522,14 +522,6 @@ public class MainActivity extends AppCompatActivity {
                 sb.append("\n用户室内外判断结果：");// *****返回用户室内外判断结果*****
                 sb.append(location.getUserIndoorState());
                 if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                    sb.append("\n速度 单位：km/h: ");
-                    sb.append(location.getSpeed());// 速度 单位：km/h
-                    sb.append("\n卫星数目：");
-                    sb.append(location.getSatelliteNumber());// 卫星数目
-                    sb.append("\n海拔高度 单位：米：");
-                    sb.append(location.getAltitude());// 海拔高度 单位：米
-                    sb.append("\ngps质量判断：");
-                    sb.append(location.getGpsAccuracyStatus());// *****gps质量判断*****
                     sb.append("\ndescribe : ");
                     sb.append("gps定位成功");
                 } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果

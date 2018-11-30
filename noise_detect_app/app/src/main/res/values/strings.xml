@@ -60,6 +60,11 @@
 
     <string name="update_his">更新历史</string>
     <string name="content_his">
+        -20181127   v2.1\n
+        1.获取任务列表功能
+        2.优化UI
+        3.修复重要bug
+        \n
         -20181127   v2.0\n
         1.增加欢迎界面\n
         2.增加任务发布功能\n
@@ -89,5 +94,4 @@
     <string name="textShare">文字分享</string>
 
     <string name="title_des">第一次使用McsShare</string>
-    <string name="content_des">相逢是缘,谢谢你的使用,哈哈!</string>
 </resources>

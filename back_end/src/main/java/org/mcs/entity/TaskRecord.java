@@ -29,7 +29,11 @@ public class TaskRecord {
 
     private Date taskEndTime;
 
+    //extra message: back to front end needed
+
     private Long userPhone;
+
+    private String name;//userName
 
     public Long getId() {
         return id;
@@ -99,6 +103,8 @@ public class TaskRecord {
         return taskStartTime;
     }
 
+
+
     public void setTaskStartTime(String taskStartTime) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
@@ -129,6 +135,14 @@ public class TaskRecord {
         this.userPhone = userPhone;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "TaskRecord{" +
@@ -143,6 +157,7 @@ public class TaskRecord {
                 ", taskStartTime=" + taskStartTime +
                 ", taskEndTime=" + taskEndTime +
                 ", userPhone=" + userPhone +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

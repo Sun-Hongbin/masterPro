@@ -45,7 +45,9 @@
     </update>
 
     <select id="selectSelective" parameterType="TaskRecord" resultType="TaskRecord">
-        select * from task_record
+        select t.* ,
+        u.name as name
+        from task_record t INNER JOIN user u ON t.publisher_id = u.id
         where 1=1
         <if test="publisherId != null">
             and publisher_id = #{publisherId}

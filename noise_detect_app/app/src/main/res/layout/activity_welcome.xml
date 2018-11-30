@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    xmlns:adroid="http://schemas.android.com/apk/res/android"
-    adroid:layout_width="match_parent"
-    adroid:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 >
 
 
     <TextView
-        adroid:layout_below="@id/image"
-        adroid:id="@+id/main_wel"
-        adroid:layout_margin="10dp"
-        adroid:layout_width="wrap_content"
-        adroid:layout_height="wrap_content"
-        adroid:layout_marginTop="20dp"
-        adroid:text="@string/back_wel"
-        adroid:layout_centerInParent="true"
-        adroid:textColor="@color/black"
-        adroid:textSize="16sp"
+        android:layout_below="@id/image"
+        android:id="@+id/main_wel"
+        android:layout_margin="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/back_wel"
+        android:layout_centerInParent="true"
+        android:textColor="@color/black"
+        android:textSize="16sp"
 
         />
     <TextView
-        adroid:layout_width="wrap_content"
-        adroid:layout_height="wrap_content"
-        adroid:text="@string/info_wel"
-        adroid:layout_centerInParent="true"
-        adroid:layout_below="@id/main_wel"
-        adroid:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/info_wel"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/main_wel"
+        android:textSize="16sp"
         />
 
     <TextView
-        adroid:layout_width="match_parent"
-        adroid:layout_height="wrap_content"
-        adroid:layout_centerHorizontal="true"
-        adroid:layout_alignParentBottom="true"
-        adroid:gravity="center"
-        adroid:text="@string/bottom_wel"
-        adroid:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="@string/bottom_wel"
+        android:layout_marginBottom="20dp"
         />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        adroid:id="@+id/image"
-        adroid:layout_width="80dp"
-        adroid:layout_height="80dp"
+        android:id="@+id/image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
 
-        adroid:src="@drawable/icon"
-        adroid:layout_alignParentTop="true"
-        adroid:layout_centerHorizontal="true"
-        adroid:layout_marginTop="187dp" />
+        android:src="@drawable/icon"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="187dp" />
 
 
 </RelativeLayout>
