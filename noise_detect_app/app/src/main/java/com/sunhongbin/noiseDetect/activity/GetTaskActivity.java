@@ -37,7 +37,7 @@ import butterknife.ButterKnife;
  */
 public class GetTaskActivity extends BaseActivity implements HttpDataResponse {
 
-    private String getAllTaskUrl = Urls.t460Purl + "/task/list";
+    private String getAllTaskUrl = Urls.aliyunUrl + "/task/list";
 
     private List<TaskRecord> mData;
     private TaskRecord[] taskRecords;

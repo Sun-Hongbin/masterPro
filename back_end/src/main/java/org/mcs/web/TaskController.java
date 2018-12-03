@@ -80,15 +80,17 @@ public class TaskController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public void listAllTask() throws Exception {
+
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         response.setContentType("application/json;charset=UTF-8");
-        PrintWriter writer = response.getWriter();//该行打印出json结果
-        List<TaskRecord> taskRecords = taskService.getTaskByMultiCondition(null);
 
-        String ljson = objectMapper.writeValueAsString(taskRecords);
+        PrintWriter writer = response.getWriter();//该行打印出json结果
+
+        List<TaskRecord> taskRecords = taskService.getTaskByMultiCondition(null);
         if (taskRecords == null) {
             writer.write("select no results");
         } else {
+            String ljson = objectMapper.writeValueAsString(taskRecords);
             writer.write(ljson);
         }
         writer.flush();

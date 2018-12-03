@@ -22,23 +22,35 @@
     </select>
 
     <select id="querySelective" parameterType="NoiseMessage" resultType="NoiseMessage">
-        select * from noise_message
-        where 1=1
-        <if test="id != null and != ''">
-            and id like #{id}
+        SELECT * FROM noise_message
+        WHERE 1=1
+        <if test="id != null">
+            AND id = #{id}
         </if>
-        <if test="userId != null and != ''">
-            and user_id like #{userId}
+        <if test="userId != null">
+            AND user_id = #{userId}
         </if>
-        <if test="db != null and != ''">
-            and db like #{db}
+        <if test="db != null">
+            AND db = #{db}
         </if>
-        <if test="ctime != null and != ''">
-            and create_time like #{ctime}
+        <if test="collectTime != null">
+            AND create_time= #{collectTime}
         </if>
-        <if test="taskId != null and != ''">
-            and task_id = #{taskId}
+        <if test="uploadTime != null">
+            AND upload_time= #{uploadTime}
         </if>
+        <if test="taskId != null">
+            AND task_id = #{taskId}
+        </if>
+    </select>
+
+    <select id="queryByRangeOfTime" parameterType="Long" resultType="NoiseMessage">
+        SELECT * FROM noise_message
+        WHERE collect_time >= #{minTime} AND collect_time <![CDATA[ <= ]]> #{maxTime}
+          <if test="taskId != null">
+            AND task_id = #{taskId}
+          </if>
+        ORDER BY collect_time DESC
     </select>
 
 </mapper>

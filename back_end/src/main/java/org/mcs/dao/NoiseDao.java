@@ -1,5 +1,6 @@
 package org.mcs.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.mcs.entity.NoiseMessage;
 
 import java.util.Date;
@@ -16,5 +17,9 @@ public interface NoiseDao {
 
     int updateByPrimaryKeySelective(Long id, Date updateTime);
 
-    List<NoiseMessage> querySelective(NoiseMessage record);
+    List<NoiseMessage> querySelective(NoiseMessage noiseMessage);
+
+    //extra mappers
+
+    List<NoiseMessage> queryByRangeOfTime(@Param("minTime") Long min, @Param("maxTime") Long max, @Param("taskId") Long taskId);
 }

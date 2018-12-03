@@ -11,25 +11,20 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 /**
- * created by SunHongbin on 2018/10/20
+ * created by SunHongbin on 2018/12/3
  */
 
-/**
- * 配置spring和junit整合，Junit启动时加载springIOC容器
- * spring-test,junit(依赖)
- */
 @RunWith(SpringJUnit4ClassRunner.class)
-//告诉Junit spring配置文件
 @ContextConfiguration({"classpath:spring/spring-dao.xml", "classpath:spring/spring-service.xml"})
-public class CollectDbImplTest {
-
+public class NoiseServiceImplTest {
     private final Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     @Resource
@@ -61,9 +56,5 @@ public class CollectDbImplTest {
 
     @Test
     public void formMap() {
-
-        NoiseMessage noiseMessage = new NoiseMessage();
-        noiseMessage.setUploadTime(1540529276812L);
-        List<NoiseMessage> list = collectDb.formMap(noiseMessage);
     }
 }

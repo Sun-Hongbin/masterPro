@@ -9,5 +9,5 @@ public class Urls {
 
     public static String aliyunUrl = "http://120.77.204.166:8080";
 
-    public static String t460Purl = "http://172.30.77.189:8080";//笔记本连local.wlan.bjtu，手机连web.wlan.bjtu
+    public static String t460Purl = "http://172.30.70.126:8080";//笔记本连local.wlan.bjtu，手机连web.wlan.bjtu
 }

@@ -1,5 +1,6 @@
 package org.mcs.web;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.mcs.entity.NoiseMessage;
 import org.mcs.entity.Value;
@@ -8,12 +9,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -24,8 +29,12 @@ import java.util.List;
 public class DBController {
 
     private File audioFile;
+
     private String fileName = "temp1.amr";
+
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static ObjectMapper objectMapper = new ObjectMapper();
 
     @Resource
     private NoiseService collectDb;
@@ -72,17 +81,34 @@ public class DBController {
         return "=====>>>collectDB success: " + record.toString();
     }
 
-    //http://localhost:8080/tools/map
-    @RequestMapping(value = "/map", method = RequestMethod.POST)
+    //http://localhost:8080/tools/map?startTime=1543592029999&endTime=1543592050500L&taskId=1
+    @RequestMapping(value = "/map", method = RequestMethod.GET)
     @ResponseBody
-    public String map(@RequestBody Value value) {
-        NoiseMessage record = new NoiseMessage();
-        record.setCollectTime(value.getCollectTime());
-        record.setUploadTime(value.getUploadTime());
-        List<NoiseMessage> list = collectDb.formMap(record);
-        for (NoiseMessage noiseMessage : list) {
-            System.out.println(noiseMessage);
+    public String map(HttpServletRequest request) {
+
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        response.setContentType("application/json;charset=UTF-8");
+
+        String min = request.getParameter("startTime");
+        String max = request.getParameter("endTime");
+        String taskId = request.getParameter("taskId");//URL不传参接收为：""，url里“&taskId="都不含会接收到"null"
+
+        try {
+            PrintWriter writer = response.getWriter();
+            List<NoiseMessage> list = collectDb.formMap(min,max, taskId);
+            if (list == null) {
+                writer.write("select no results");
+            } else {
+                String json = objectMapper.writeValueAsString(list);
+                writer.write(json);
+            }
+            writer.flush();
+            writer.close();
+            return "map";
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return "map";
+
+        return null;
     }
 }

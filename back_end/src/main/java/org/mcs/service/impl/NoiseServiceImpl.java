@@ -39,16 +39,21 @@ public class NoiseServiceImpl implements NoiseService {
     }
 
     @Override
-    public List<NoiseMessage> formMap(NoiseMessage noiseMessage) {
-        if (noiseMessage.getUploadTime() == null) {
+    public List<NoiseMessage> formMap(String minTime, String maxTime, String taskId) {
+        Long task_id;
+        if(minTime.equals("") || maxTime.equals("")){
             return null;
         }
+        if (taskId == null || taskId.equals("")) {
+            task_id = null;
+        } else {
+            task_id = Long.valueOf(taskId);
+        }
         try {
-            return noiseDao.querySelective(noiseMessage);
-        } catch (Exception e) {
+            return noiseDao.queryByRangeOfTime(Long.valueOf(minTime), Long.valueOf(maxTime), task_id);
+        } catch (NumberFormatException e) {
             e.printStackTrace();
         }
         return null;
-
     }
 }

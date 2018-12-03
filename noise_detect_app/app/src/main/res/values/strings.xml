@@ -3,6 +3,8 @@
     <string name="startlocation">开始定位</string>
     <string name="stoplocation">关闭定位</string>
 
+    <string name="search_get_map">热力图展示</string>
+
     <string name="star_time">任务开始时间</string>
     <string name="end_time">任务结束时间</string>
 
@@ -26,6 +28,7 @@
     <string name="other_nav">其他</string>
     <string name="folder_nav">我的任务记录</string>
     <string name="recycle_nav">最近撤销任务</string>
+    <string name="noise_map_nav">噪声地图</string>
     <string name="security_nav">隐私安全</string>
     <string name="about_nav">关于</string>
     <string name="exit_nav">退出 MCS Share</string>

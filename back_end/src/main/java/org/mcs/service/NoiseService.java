@@ -13,5 +13,5 @@ public interface NoiseService {
     NoiseMessage create(NoiseMessage record, Long userPhone);
 
     //查某一时间段的噪声地图
-    List<NoiseMessage> formMap(NoiseMessage record);
+    List<NoiseMessage> formMap(String minTime, String maxTime,String taskId);
 }

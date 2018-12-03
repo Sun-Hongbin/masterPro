@@ -10,8 +10,8 @@
                 android:icon="@drawable/pic_delete"
                 android:title="@string/recycle_nav" />
             <item
-                android:icon="@drawable/pic_security"
-                android:title="@string/security_nav" />
+                android:icon="@drawable/pic_radar"
+                android:title="@string/noise_map_nav" />
         </menu>
     </item>
 

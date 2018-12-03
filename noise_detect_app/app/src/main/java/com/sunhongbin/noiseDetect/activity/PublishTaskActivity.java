@@ -48,7 +48,7 @@ public class PublishTaskActivity extends BaseActivity implements View.OnClickLis
     private int flag;
     private int year, month, day, hour, minute;
 
-    private String url = Urls.t460Purl + "/task/publish";
+    private String url = Urls.aliyunUrl + "/task/publish";
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @BindView(R.id.input_task_description_id)

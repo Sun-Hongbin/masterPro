@@ -107,6 +107,17 @@ public class DoUpload {
         executeRequest(request, httpDataResponse);
     }
 
+
+    //获取地图需要的数据
+    public void get_HeatMapData(String url, HttpDataResponse httpDataResponse){
+        Request.Builder builder = new Request.Builder();
+        Request request = builder
+                .url(url)
+                .get()
+                .build();
+        executeRequest(request, httpDataResponse);
+    }
+
     public void getTaskMessage(String url, HttpDataResponse httpDataResponse) {
         Request request = new Request.Builder()
                 .url(url)

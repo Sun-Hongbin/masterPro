@@ -47,7 +47,7 @@ import com.sunhongbin.noiseDetect.view.SoundDiscView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String dbUrl = Urls.t460Purl + "/tools/db";
+    private static String dbUrl = Urls.aliyunUrl + "/tools/db";
 
     float volume = 10000;
     private SoundDiscView soundDiscView;
@@ -178,10 +178,10 @@ public class MainActivity extends AppCompatActivity {
 //                        Intent intent = new Intent(MainActivity.this,FilesActivity.class);
 //                        startActivityForResult(intent,1);
 //                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                    case "最近撤销任务":
-//                        Intent intent1 = new Intent(MainActivity.this,RecycleActivity.class);
-//                        startActivity(intent1);
-//                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                    case "噪声地图":
+                        Intent intent1 = new Intent(MainActivity.this,HeatMapActivity.class);
+                        startActivity(intent1);
+                        overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                         break;
                     case "隐私安全":
 //                        Intent intent2 = new Intent(MainActivity.this,SecurityActivity.class);
