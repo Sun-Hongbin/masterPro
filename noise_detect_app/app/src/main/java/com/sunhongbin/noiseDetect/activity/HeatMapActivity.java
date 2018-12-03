@@ -49,7 +49,7 @@ import butterknife.ButterKnife;
  */
 public class HeatMapActivity extends AppCompatActivity implements View.OnClickListener, HttpDataResponse {
 
-    private String url = Urls.t460Purl + "/tools/map";
+    private String url = Urls.aliyunUrl + "/tools/map";
 
     private Long startTime, endTime;
 
